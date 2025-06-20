@@ -33,7 +33,7 @@ where $\boldsymbol{\theta}$ denotes the parameters to be learned. For example, t
 
 For machine translation, the encoder-decoder architecture is a widely adopted framework for building the Autoregressive (AR) model. Before the emergence of Transformers, both the encoder and decoder were commonly implemented using Recurrent Neural Networks (RNNs). Here, the encoder RNN processes a variable-length input sequence from the source language and encodes it into a fixed-size hidden state, which serves as a summary of the input. This final hidden state is then passed to the decoder at every decoding step to condition the output on the source sequence. The decoder RNN generates the target-language output token by token, relying on both the encoded input and the previously generated tokens. During training, it is guided by the ground truth target tokens (teacher forcing), while during inference, it generates tokens sequentially, conditioning each prediction on its own prior outputs.
 
-![rnn_encoder_decoder](/Users/fudong/images/rnn_encoder_decoder.png)
+![rnn_encoder_decoder](./../images/rnn_encoder_decoder.png)
 
 ​								Figure 1: RNN-based Sequence-to-Sequence Learning for Machine Translation.
 
@@ -53,7 +53,7 @@ However, RNN-based encoder-decoder architectures suffer from two major limitatio
 
 ## Transformers
 
-![Transformers](/Users/fudong/images/transformers.png)
+![Transformers](./../images/transformers.png)
 
 ​								Figure 2: Illustrations of the Transformer architecture for machine translation.
 
@@ -95,7 +95,7 @@ We have seen how Masked Multi-Head Attention enables parallelization, effectivel
 
 #### Tokenization
 
-![tokenizer](/Users/fudong/images/tokenizer.png)
+![tokenizer](./../images/tokenizer.png)
 
 ​													Figure 3: Example of Tokenizer.
 
@@ -105,7 +105,7 @@ Before discussing Multi-Head Attention, we first need to understand tokenization
 
 
 
-![tokenization](/Users/fudong/images/tokenization.png)
+![tokenization](./../images/tokenization.png)
 
 ​												Figure 4: The End-to-End Workflow of Tokenizer.	
 
@@ -123,7 +123,7 @@ In the field of computer vision, we are still awaiting our own “ChatGPT moment
 
 ### Single-Head Attention
 
-![image-20250614230247926](/Users/fudong/images/attention.png)
+![image-20250614230247926](./../images/attention.png)
 
 ​									Figure 5: The Single-Head and Multi-Head Attenion method.
 
