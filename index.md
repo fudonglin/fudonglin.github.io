@@ -1,5 +1,5 @@
-Here you can say lots of fun things about your site.
+Why climb a mountain?
 
-Maybe say a some things about yourself.
+Because it is there.
 
-Or maybe what you plan to blog about.
+——George Mallory 
