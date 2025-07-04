@@ -28,7 +28,7 @@ where $\boldsymbol{\theta}$ denotes the parameters to be learned. For example, t
 
 For machine translation, the encoder-decoder architecture is a widely adopted framework for building the Autoregressive (AR) model. Before the emergence of Transformers, both the encoder and decoder were commonly implemented using Recurrent Neural Networks (RNNs). Here, the encoder RNN processes a variable-length input sequence from the source language and encodes it into a fixed-size hidden state, which serves as a summary of the input. This final hidden state is then passed to the decoder at every decoding step to condition the output on the source sequence. The decoder RNN generates the target-language output token by token, relying on both the encoded input and the previously generated tokens. During training, it is guided by the ground truth target tokens (teacher forcing), while during inference, it generates tokens sequentially, conditioning each prediction on its own prior outputs.
 
-![rnn_encoder_decoder](https://github.com/fudonglin/fudonglin.github.io/blob/main/_posts/2025-06-24-transformer/rnn_encoder_decoder.png)
+![rnn_encoder_decoder](rnn_encoder_decoder.png)
 
 ​								Figure 1: RNN-based Sequence-to-Sequence Learning for Machine Translation.
 
