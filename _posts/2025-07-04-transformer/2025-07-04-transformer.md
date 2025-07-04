@@ -105,13 +105,13 @@ The answer is  **NO** during training, but **YES** during inference.
 
 
 During training, since the ground-truth target tokens are available, Transformers leverage Masked Multi-Head Attention to enable the autoregressive property. 
-The entire target sequence is fed into the decoder at once, but attention masks are used to ensure that each position can only attend to previous tokens—mimicking autoregressive behavior. 
+The entire target sequence is fed into the decoder at once, but attention masks are used to ensure that each position can only attend to previous tokens, i.e., mimicking autoregressive behavior. 
 This allows the model to predict all tokens in parallel while preserving the correct dependency structure. 
 The following example illustrates how Masked Multi-Head Attention enables the simultaneous prediction of tokens at different positions:
 
 $$
 \begin{gathered}
-  \text{"<bos> <mask> <mask> <mask> <mask> <mask>"} \rightarrow \text{"New"} \\
+  \text{``<bos> <mask> <mask> <mask> <mask> <mask>''} \rightarrow \text{"New"} \\
   \text{"<bos> New <mask> <mask> <mask> <mask>"} \rightarrow \text{"York"} \\
   \cdots \\
   \text{"<bos> New York is a <mask>"} \rightarrow \text{"city"} \\
