@@ -10,9 +10,9 @@ The first time I read the Transformer paper [1] was in the spring of 2021, durin
 
 Let's begin our journey with a machine translation task (translating from Chinese to English):
 
-| Source Language (Chinese) | Target Lanuage (English) |
-| ------------------------- | ------------------------ |
-| 纽约是一座城市            | New York is a city       |
+| Source Language (Chinese) | Target Language (English) |
+| ------------------------- |---------------------------|
+| 纽约是一座城市            | New York is a city        |
 
 
 
