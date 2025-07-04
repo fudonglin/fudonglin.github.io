@@ -17,20 +17,6 @@ layout: default
       {%- endif -%}</p>
 
       <script>
-        MathJax = {
-  startup: {
-    ready() {
-      MathJax.startup.defaultReady();
-      MathJax.startup.document.inputJax[0].preFilters.add(({math}) => {
-        if (math.math.match(/\\\\/)) {
-          math.math = `\\displaylines{${math.math}}`;
-        }
-      });
-    }
-  }
-}
-      </script>
-      <script>
         window.MathJax = {
           tex: {
             inlineMath: [['$', '$'], ['\\(', '\\)']]
