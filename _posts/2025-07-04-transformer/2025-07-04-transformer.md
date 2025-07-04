@@ -178,7 +178,7 @@ $$
 \text{Attention}(\mathbf{Q}, \mathbf{K}, \mathbf{V}) = \text{softmax}\left(\frac{\mathbf{QK}^{T}}{\sqrt{d_k}}\right)\mathbf{V}.
 $$
 
-Here, $\mathbf{Q} = \mathbf{M}\_{q} \cdot X $, $ \mathbf{K} = \mathbf{M}\_{k} \cdot \mathbf{X} $, and $ \mathbf{V} = \mathbf{M}\_{v} \cdot \mathbf{X} $ are the **query**, **key**, and **value** matrices, respectively. 
+Here, $\mathbf{Q} = \mathbf{M}\_{q} \cdot \mathbf{X} $, $ \mathbf{K} = \mathbf{M}\_{k} \cdot \mathbf{X} $, and $ \mathbf{V} = \mathbf{M}\_{v} \cdot \mathbf{X} $ are the **query**, **key**, and **value** matrices, respectively. 
 These are obtained by applying learned linear projections—$ \mathbf{M}\_{q} $, $ \mathbf{M}\_{k} $, and $\mathbf{M}\_{v} $—to the input token embeddings $\mathbf{X}$.
 
 
@@ -186,25 +186,30 @@ These are obtained by applying learned linear projections—$ \mathbf{M}\_{q} $,
 In essence, **attention computes a weighted sum over all tokens in the input sequence, assigning higher weights to those that are more relevant (or similar) to the query**. We can rewrite the attention equation more intuitively as:
 
 $$
-\text{Attention}(\mathbf{Q}, \mathbf{K}, \mathbf{V}) = \mathbf{W} \mathbf{V}, \quad \text{where} \quad \mathbf{W} = \text{softmax}\left(\frac{\mathbf{QK}^{T}}{\sqrt{d_k}}\right)
+\text{Attention}(\mathbf{Q}, \mathbf{K}, \mathbf{V}) = \mathbf{W} \mathbf{V}, \quad \text{where} ~\mathbf{W} = \text{softmax}\left(\frac{\mathbf{QK}^{T}}{\sqrt{d_k}}\right).
 $$
 
 Here, $ \mathbf{QK}^T $ computes the similarity scores between queries and keys, effectively capturing the relevance between tokens.
 
 
 
-Returning to our machine translation example, suppose the model is trying to predict the word *"city"* in the following conditional probability:
+Returning to our machine translation example, suppose the model is trying to predict the word `"city"` in the following conditional probability:
+
 $$
-p_{\boldsymbol{\theta}}(\text{``city''} \mid \text{``<bos> New York is a <mask>''}).
+p_{\mathbf{\theta}}(\text{"city"} \mid \text{"<bos> New York is a <mask>"}).
 $$
 
-For simplicity, we exclude the conditioning on the source language and restrict our discussion to Masked Self-Attention. Then, we have:
+For simplicity, we exclude the conditioning on the source language and restrict our discussion to Masked Self-Attention. 
+Then, we have:
+
 $$
-\text{``<bos> New York is a <mask>''} \\
+\begin{gathered}
+\text{"<bos> New York is a <mask>"} \\
 \downarrow \\
 X = [x_0, x_1, x_2, x_3, x_4, x_5] \\
 \downarrow \\
-V = [v_0, v_1, v_2, v_3, v_4, v_5]
+V = [v_0, v_1, v_2, v_3, v_4, v_5].
+\end{gathered}
 $$
 
 
@@ -212,6 +217,7 @@ $$
 
 The output embedding at position 5 is computed as:
 $$
+\begin{gathered}
 y_5 = [w_0^5, w_1^5, \dots, w_5^5] 
 \begin{bmatrix}
 v_0 \\
@@ -219,17 +225,18 @@ v_1 \\
 \vdots \\
 v_5
 \end{bmatrix}
+\end{gathered}
 $$
 
-Since *"city"* is semantically related to *"New York"*, we expect the model to assign higher attention weights to $ w_2^5 $ and $ w_3^5 $, which correspond to the tokens *"New"* and *"York"*.
+Since `"city"` is semantically related to `"New York"`, we expect the model to assign higher attention weights to $ w\_2^5 $ and $ w\_3^5 $, which correspond to the tokens `"New"` and `"York"`.
 
-Cross-attention operates in a similar way. For example, consider the case where the model aims to predict the word *"city"* under the following condition:
+The cross-attention operates in a similar way. For example, consider the case where the model aims to predict the word `"city"` under the following condition:
 
 $$
-p_{\boldsymbol{\theta}}(\text{``city''} \mid \text{``<bos> New York is a <mask>''}, \text{``纽约是一座城市<eos>''}).
+p_{\mathbf{\theta}}(\text{"city"} \mid \text{"<bos> New York is a <mask>"}, \text{"纽约是一座城市<eos>"}).
 $$
 
-Ideally, the model should assign higher attention weights to the tokens *"New"*, *"York"*, as well as the corresponding source-language tokens *"城"*, and *"市"*
+Ideally, the model should assign higher attention weights to the tokens `"New"`, `"York"`, as well as the corresponding source-language tokens `"城"` and `"市"`.
 
 
 
