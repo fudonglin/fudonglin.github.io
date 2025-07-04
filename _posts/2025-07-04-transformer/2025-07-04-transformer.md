@@ -224,7 +224,7 @@ v_0 \\
 v_1 \\
 \vdots \\
 v_5
-\end{bmatrix}
+\end{bmatrix}.
 \end{gathered}
 $$
 
@@ -240,15 +240,22 @@ Ideally, the model should assign higher attention weights to the tokens `"New"`,
 
 
 
-#### The Scaling Term $\sqrt{d_{k}}$
+#### The Scaling Term in Attention
 
-If you’ve followed along this far—congratulations! You now have a solid understanding of how Attention works. But one important question remains: **what is the role of** $ \sqrt{d_k} $ **in the Attention mechanism?**
+WE now have a solid understanding of how Attention works. 
+But one important question remains: 
 
-The purpose of dividing by $ \sqrt{d_k} $ is to produce a **smoother distribution of attention weights**. Without this scaling term, the dot products in $ QK^T $ can become large in magnitude when the dimensionality $ d_k $ is high, leading the softmax function to produce very sharp distributions that overly emphasize a few tokens. As illustrated below, omitting $ \sqrt{d_k} $ can cause the model to assign nearly all attention to a small number of tokens, while including it results in a more balanced attention distribution:
+**What is the role of** $ \sqrt{d\_{k}} $ **in the Attention mechanism?**
+
+The purpose of dividing by $ \sqrt{d\_{k}} $ is to produce a smoother distribution of attention weights. 
+Without this scaling term, the dot products in $ QK^T $ can become large in magnitude when the dimensionality $ d\_{k} $ is high, leading the softmax function to produce very sharp distributions that overly emphasize a few tokens. 
+As illustrated below, omitting $ \sqrt{d\_{k}} $ can cause the model to assign nearly all attention to a small number of tokens, while including it results in a more balanced attention distribution:
 
 $$
-w = [10^{-6}, 10^{-3}, 0.99,  10^{-6}, \dots, 10^{-6}] \quad \text{(without } \sqrt{d_k} \text{)}, \\\\
+\begin{gathered}
+w = [10^{-6}, 10^{-3}, 0.99,  10^{-6}, \dots, 10^{-6}] \quad \text{(without } \sqrt{d_k} \text{)}, \\
 w = [0.01, 0.1, 0.85, \dots, 0.01] \quad \text{(with } \sqrt{d_k} \text{)}.
+\end{gathered}
 $$
 
 > Note: The scaling term $\sqrt{d_k}$ refers to the dimensionality of the keys and should not be confused with the model's hidden dimension, denoted as $d_{\text{model}}$, which appears in the context of multi-head attention.
