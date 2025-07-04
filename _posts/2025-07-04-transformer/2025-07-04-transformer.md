@@ -93,7 +93,7 @@ According to the Autoregressive (AR) model, the Transformer can only attend to t
 Therefore, the AR model predicts the next word by estimating the following conditional probability:
 
 $$
-p_{\mathbf{\theta}} (\text{``York''}| \text{``<bos> New <mask> <mask> <mask> <mask>''}, \text{``纽约是一座城市 <bos>''}).
+p_{\mathbf{\theta}} (\textrm{"York""}| \textrm{"<bos> New <mask> <mask> <mask> <mask>"}, \textrm{"纽约是一座城市 <bos>"}).
 $$
 
 Here, the purpose of Masked Multi-Head Attention in the decoder is to prevent the model from accessing future tokens in the target sequence. This raises an important question: 
@@ -110,11 +110,11 @@ This allows the model to predict all tokens in parallel while preserving the cor
 The following example illustrates how Masked Multi-Head Attention enables the simultaneous prediction of tokens at different positions:
 
 $$
-\text{``<bos> <mask> <mask> <mask> <mask> <mask>''} \rightarrow \text{``"New"''} \\\\
-\text{``<bos> New <mask> <mask> <mask> <mask>''} \rightarrow \text{``York"''} \\
+\text{"<bos> <mask> <mask> <mask> <mask> <mask>"} \rightarrow \text{"New"} \\
+\text{"<bos> New <mask> <mask> <mask> <mask>"} \rightarrow \text{"York"} \\
 \cdots \\
-\text{``<bos> New York is a <mask>''} \rightarrow \text{``city''} \\
-\text{``<bos> New York is a city''} \rightarrow \text{``<eos>''}.
+\text{"<bos> New York is a <mask>"} \rightarrow \text{"city"} \\
+\text{"<bos> New York is a city"} \rightarrow \text{"<eos>"}.
 $$
 
 
