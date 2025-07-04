@@ -16,10 +16,10 @@ Let's begin our journey with a machine translation task (translating from Chines
 
 
 
-In this blog, we explore machine translation using an Autoregressive (AR) model. Let $\mathbf{x}$ and $\mathbf{y}$ denote the source and target language sequences, respectively. Given a target sentence of length $T$, we use $\mathbf{y}_{t}$ to represent the word at position $t$, and $\mathbf{y}_{<t}$ to denote all preceding words. The AR model generates the translation one word at a time, predicting $\mathbf{y}_t$ based on the source input $\mathbf{x}$ and the full semantic context provided by $\mathbf{y}_{<t}$:
+In this blog, we explore machine translation using an Autoregressive (AR) model. Let $\mathbf{x}$ and $\mathbf{y}$ denote the source and target language sequences, respectively. Given a target sentence of length $T$, we use $\mathbf{y}\_{t}$ to represent the word at position $t$, and $\mathbf{y}\_{<t}$ to denote all preceding words. The AR model generates the translation one word at a time, predicting $\mathbf{y}\_{t}$ based on the source input $\mathbf{x}$ and the full semantic context provided by $\mathbf{y}\_{<t}$:
 
 ``` math
-\max_{\boldsymbol{\theta}} ~\log p_{\mathbf{\theta}}(\mathbf{y} | \mathbf{x}) = \sum_{t=1}^{T} \log p_{\mathbf{\theta}}(\mathbf{y}_{t} | \mathbf{y}_{<t}, \mathbf{x}),
+\max_{\boldsymbol{\theta}} ~\log p_{\mathbf{\theta}}(\mathbf{y} | \mathbf{x}) = \sum_{t=1}^{T} \log p_{\theta} (\mathbf{y}_{t} | y_{\lt t}, \mathbf{x})
 ```
 
 where $\boldsymbol{\theta}$ denotes the parameters to be learned. For example, the AR model predicts the word `city` based on the context of  `New York is a` and `纽约是一座城市`, i.e., $p_{\boldsymbol{\theta}} (\text{``city"}| \text{``New York is a"}, \text{``纽约是一座城市''})$.
