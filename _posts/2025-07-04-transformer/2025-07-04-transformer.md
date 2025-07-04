@@ -267,17 +267,22 @@ $$
 ### Multi-Head Attention
 
 In the original paper, the authors found that optimizing Transformers across multiple smaller hidden spaces can lead to better generalization and efficiency compared to relying on a single large unified space. 
-%
 Driven by this observation, the authors propose the Multi-Head Attention, expressed as below:
 
 $$
 \begin{gathered}
-\text{MultiHead}(Q, K, V) = \text{Concat}(\text{head}_1, \dots, \text{head}_h) W^O \\
-\text{where} \quad \text{head}_i = \text{Attention}(QW_i^Q, KW_i^K, VW_i^V) \quad
-\text{and} \quad \text{Attention}(Q, K, V) = \text{softmax}\left( \frac{QK^T}{\sqrt{d_k}} \right) V.
+\text{MultiHead}(\mathbf{Q}, \mathbf{K}, \mathbf{V}) = \text{Concat}(\text{head}_1, \dots, \text{head}_h) \mathbf{W}^O \\
+\text{where} \quad \text{head}_i = \text{Attention}(\mathbf{Q} \mathbf{W}_i^Q, \mathbf{K} \mathbf{W}_i^K, \mathbf{V} \mathbf{W}_i^V) \quad
+\text{and} \quad \text{Attention}(\mathbf{Q}, \mathbf{K}, \mathbf{V}) = \text{softmax}\left( \frac{\mathbf{Q} \mathbf{K}^T}{\sqrt{d_k}} \right) \mathbf{V},
 \end{gathered}
 $$
 
+where $i$ denote the $i$-th attention head, and $\mathbf{W}^{O}$ is a learnable matrix.
+
+Let's see an example for better understanding the Multi-Head Attention. 
+Assume the hidden dimension $d\_{\textrm{model}}$ is 512 and the number of attention heads is 8. 
+Then, Multi-Head Attention splits the hidden dimension into 8 subspaces, each with a dimensionality of $d\_{k} = 64$. Within each subspace, a separate Single-Head Attention operation is performed. 
+The outputs from all heads are then concatenated and projected using the weight matrix $\mathbf{W}^{O}$ to produce the final output embedding.
 
 Despite effectiveness, the authors did not offer a clear explanation for why Multi-Head Attention outperforms Single-Head Attention when both share the same hidden dimension size.
 
