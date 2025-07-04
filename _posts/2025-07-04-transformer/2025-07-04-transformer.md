@@ -111,7 +111,7 @@ The following example illustrates how Masked Multi-Head Attention enables the si
 
 $$
 \begin{gathered}
-  \text{``<bos> <mask> <mask> <mask> <mask> <mask>''} \rightarrow \text{"New"} \\
+  \text{"<bos> <mask> <mask> <mask> <mask> <mask>"} \rightarrow \text{"New"} \\
   \text{"<bos> New <mask> <mask> <mask> <mask>"} \rightarrow \text{"York"} \\
   \cdots \\
   \text{"<bos> New York is a <mask>"} \rightarrow \text{"city"} \\
@@ -127,33 +127,39 @@ This sequential decoding is the reason why models like ChatGPT—built on decode
 
 ### Attention
 
-We have seen how Masked Multi-Head Attention enables parallelization, effectively addressing one of the key limitations of RNNs. Now, let’s take a closer look at Multi-Head Attention itself and explore how it helps overcome the long-range dependency issue. This challenge arises in RNNs because the model relies solely on the final hidden state to encode the entire input sequence.
+We have seen how Masked Multi-Head Attention effectively enables the autoregressive property, thereby significantly enhancing parallelization—a key limitation of RNNs. 
+Now, let’s take a closer look at Multi-Head Attention itself and explore how it helps overcome the long-range dependency issue. This challenge arises in RNNs because the model relies solely on the final hidden state to encode the entire input sequence.
 
 #### Tokenization
 
+Before discussing Multi-Head Attention, we first need to understand tokenization. 
+
+**Why do we need a Tokenizer?** The reason is that computers do not understand human language—they only process binary signals. 
+Therefore, we must convert human language into numerical representations that models can understand. 
+In simple terms, a Tokenizer functions like a dictionary: each token (usually a word or subword) is mapped to a unique index and a learnable embedding, as shown in Figure 3. 
+In practice, we often directly use pre-trained Tokenizers, such as those available from Hugging Face.
+
+
 ![tokenizer](https://github.com/fudonglin/fudonglin.github.io/blob/main/_posts/2025-07-04-transformer/tokenizer.png?raw=true)
 
-​													Figure 3: Example of Tokenizer.
-
-Before discussing Multi-Head Attention, we first need to understand tokenization. **Why do we need a Tokenizer?** The reason is that computers do not understand human language—they only process binary signals. Therefore, we must convert human language into numerical representations that models can understand. In simple terms, a Tokenizer functions like a dictionary: each token (usually a word or subword) is mapped to a unique index and a learnable embedding. In practice, we often use pre-trained Tokenizers, such as those available from Hugging Face.
+​Figure 3: Example of Token, Index, and Embedding mapping.
 
 
 
+Figure 4 illustrates how the tokenizer operates within the Transformer architecture. Given an input sequence, the tokenizer first converts each token into a unique index and retrieves the corresponding embedding. These embeddings are then fed into the Transformer model to predict the next tokens. The output of the Transformer—namely, the predicted token embeddings—is mapped back to their respective indices and decoded into human-readable words.
 
 
 ![tokenization](https://github.com/fudonglin/fudonglin.github.io/blob/main/_posts/2025-07-04-transformer/tokenization.png?raw=true)
 
-​												Figure 4: The End-to-End Workflow of Tokenizer.	
+Figure 4: The End-to-End Workflow of Tokenizer.	
 
 
 
-Here’s how the tokenizer operates within the Transformer architecture. Given an input sequence, the tokenizer first converts each token into a unique index and retrieves the corresponding embedding. These embeddings are then fed into the Transformer model to predict the next tokens. The output of the Transformer—namely, the predicted token embeddings—is mapped back to their respective indices and decoded into human-readable words.
+Personally, I believe the Tokenizer plays a critical role in the recent success of LLMs, as it effectively bridges the gap between human language and computer-readable input. For example, while vision models tend to generate unrealistic or distorted images, language models are much less likely to produce non-existent words—thanks in large part to robust tokenization. 
 
-
-
-Personally, I believe that the Tokenizer plays a critical role in the recent success of large language models (LLMs), as it effectively bridges the gap between human language and computer-readable input. For example, while vision models tend to generate unrealistic or distorted images, language models are much less likely to produce non-existent words—thanks in large part to robust tokenization. 
-
-In the field of computer vision, we are still awaiting our own “ChatGPT moment.” Perhaps the breakthrough lies in developing visionary Tokenizers capable of bridging the gap between visual data and machine understanding. It’s important to note, however, that language tokenization operates over a discrete and finite vocabulary (e.g., approximately 30,000 commonly used English tokens), whereas vision tokenization must grapple with a continuous and effectively infinite input space if we aim to model the visual world in its entirety. With that being said, building vision tokenizers is significantly more challenging than their language counterparts.
+In the field of computer vision, we are still awaiting our own "ChatGPT moment". 
+Perhaps the breakthrough lies in developing vision Tokenizers capable of bridging the gap between visual data and machine understanding. It’s important to note, however, that language tokenization operates over a discrete and finite vocabulary (e.g., approximately 30,000 commonly used English tokens), whereas vision tokenization must grapple with a continuous and effectively infinite input space if we aim to model the visual world in its entirety. 
+With that being said, building vision tokenizers is much more challenging than their language counterparts.
 
 
 
@@ -161,26 +167,29 @@ In the field of computer vision, we are still awaiting our own “ChatGPT moment
 
 ![image-20250614230247926](https://github.com/fudonglin/fudonglin.github.io/blob/main/_posts/2025-07-04-transformer/attention.png?raw=true)
 
-​									Figure 5: The Single-Head and Multi-Head Attenion method.
+Figure 5: The Single-Head and Multi-Head Attention methods.
 
 
 
-Everyone talks about attention—but do we truly understand how it works? While many of us might, if you're new to machine learning, let’s uncover its inner workings step by step. We begin by introducing the core equation of the attention mechanism:
+
+Next, let’s uncover the Attention—the core idea in the Transformer—step by step. We begin by introducing the equation of the Attention mechanism:
+
 $$
-\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^{T}}{\sqrt{d_k}}\right)V.
+\text{Attention}(\mathbf{Q}, \mathbf{K}, \mathbf{V}) = \text{softmax}\left(\frac{\mathbf{QK}^{T}}{\sqrt{d_k}}\right)\mathbf{V}.
 $$
 
-Here, $Q = M_q X $, $ K = M_k X $, and $ V = M_v X $ are the **query**, **key**, and **value** matrices, respectively. These are obtained by applying learned linear projections—$ M_q $, $ M_k $, and $M_v $—to the input token embeddings $X $.
+Here, $\mathbf{Q} = \mathbf{M}\_{q} \cdot X $, $ \mathbf{K} = \mathbf{M}\_{k} \cdot \mathbf{X} $, and $ \mathbf{V} = \mathbf{M}\_{v} \cdot \mathbf{X} $ are the **query**, **key**, and **value** matrices, respectively. 
+These are obtained by applying learned linear projections—$ \mathbf{M}\_{q} $, $ \mathbf{M}\_{k} $, and $\mathbf{M}\_{v} $—to the input token embeddings $\mathbf{X}$.
 
 
 
 In essence, **attention computes a weighted sum over all tokens in the input sequence, assigning higher weights to those that are more relevant (or similar) to the query**. We can rewrite the attention equation more intuitively as:
 
 $$
-\text{Attention}(Q, K, V) = W \cdot V, \quad \text{where} \quad W = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)
+\text{Attention}(\mathbf{Q}, \mathbf{K}, \mathbf{V}) = \mathbf{W} \mathbf{V}, \quad \text{where} \quad \mathbf{W} = \text{softmax}\left(\frac{\mathbf{QK}^{T}}{\sqrt{d_k}}\right)
 $$
 
-Here, $ QK^T $ computes the similarity scores between queries and keys, effectively capturing the relevance between tokens.
+Here, $ \mathbf{QK}^T $ computes the similarity scores between queries and keys, effectively capturing the relevance between tokens.
 
 
 
@@ -242,11 +251,13 @@ $$
 ### Multi-Head Attention
 
 The key idea of Multi-Head Attention is to allow the model to attend to information from different representation subspaces at different positions in parallel:
+
 $$
 \text{MultiHead}(Q, K, V) = \text{Concat}(\text{head}_1, \dots, \text{head}_h) W^O \\
 \text{where} \quad \text{head}_i = \text{Attention}(QW_i^Q, KW_i^K, VW_i^V) \quad
 \text{and} \quad \text{Attention}(Q, K, V) = \text{softmax}\left( \frac{QK^T}{\sqrt{d_k}} \right) V
 $$
+
 In the original paper, the authors found that optimizing Transformers across multiple smaller hidden spaces can lead to better generalization and efficiency compared to relying on a single large unified space. However, they did not offer a clear explanation for why Multi-Head Attention outperforms Single-Head Attention when both share the same total hidden dimension.
 
 Based on my previous experiments with various Vision Transformers (ViTs) [3], this phenomenon may be partly explained. I found that activating only the top 75% most responsive parameters resulted in just a 0.1% to 0.4% drop in performance on the ImageNet benchmark across multiple ViT variants. This suggests that the remaining 25% of parameters contribute minimally to the final output. One possible reason why Multi-Head Attention is more effective is that dividing a large hidden dimension into smaller subspaces can reduce the number of inactive or underutilized parameters, thereby enhancing the effective utilization of neurons.
