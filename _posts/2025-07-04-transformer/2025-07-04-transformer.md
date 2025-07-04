@@ -288,7 +288,7 @@ Despite effectiveness, the authors did not offer a clear explanation for why Mul
 Based on my previous experiments with various Vision Transformers (ViTs) [3], this phenomenon may be partly explained. 
 I found that activating only the top 75% most responsive parameters resulted in just a 0.1% to 0.4% drop in performance on the ImageNet benchmark across multiple ViT variants. 
 This suggests that the remaining 25% of parameters have not been utilized and contribute minimally to the final performance. 
-One possible reason why Multi-Head Attention is more effective is that dividing a large hidden dimension into smaller subspaces can reduce the number of inactive or underutilized parameters, thereby enhancing the effective utilization of neurons.
+One possible reason why Multi-Head Attention is more effective is that dividing a large hidden dimension into smaller subspaces can reduce the number of inactive or underutilized parameters, thereby enhancing the effectiveness and generalization of Transformers.
 
 
 
@@ -312,8 +312,8 @@ In the original Transformer paper, the authors represent the positional informat
 
 $$
 \begin{gathered}
-PE(pos, 2i) = \sin(\frac{pos}{10000^{2i/d_{model}}}) \\
-PE(pos, 2i+1) = \cos(\frac{pos}{10000^{2i/d_{model}}})
+PE(pos, 2i) = \sin(\frac{pos}{10000^{2i/d_{model}}}), \\
+PE(pos, 2i+1) = \cos(\frac{pos}{10000^{2i/d_{model}}}).
 \end{gathered}
 $$
 
