@@ -17,9 +17,11 @@ Let's begin our journey with a machine translation task (translating from Chines
 
 
 In this blog, we explore machine translation using an Autoregressive (AR) model. Let $\mathbf{x}$ and $\mathbf{y}$ denote the source and target language sequences, respectively. Given a target sentence of length $T$, we use $\mathbf{y}_{t}$ to represent the word at position $t$, and $\mathbf{y}_{<t}$ to denote all preceding words. The AR model generates the translation one word at a time, predicting $\mathbf{y}_t$ based on the source input $\mathbf{x}$ and the full semantic context provided by $\mathbf{y}_{<t}$:
-$$
+
+```math
 \max_{\boldsymbol{\theta}} ~\log p_{\mathbf{\theta}}(\mathbf{y} | \mathbf{x}) = \sum_{t=1}^{T} \log p_{\mathbf{\theta}}(\mathbf{y}_{t} | \mathbf{y}_{<t}, \mathbf{x}),
-$$
+```
+
 where $\boldsymbol{\theta}$ denotes the parameters to be learned. For example, the AR model predicts the word `city` based on the context of  `New York is a` and `纽约是一座城市`, i.e., $p_{\boldsymbol{\theta}} (\text{``city"}| \text{``New York is a"}, \text{``纽约是一座城市''})$.
 
 
@@ -28,7 +30,7 @@ where $\boldsymbol{\theta}$ denotes the parameters to be learned. For example, t
 
 For machine translation, the encoder-decoder architecture is a widely adopted framework for building the Autoregressive (AR) model. Before the emergence of Transformers, both the encoder and decoder were commonly implemented using Recurrent Neural Networks (RNNs). Here, the encoder RNN processes a variable-length input sequence from the source language and encodes it into a fixed-size hidden state, which serves as a summary of the input. This final hidden state is then passed to the decoder at every decoding step to condition the output on the source sequence. The decoder RNN generates the target-language output token by token, relying on both the encoded input and the previously generated tokens. During training, it is guided by the ground truth target tokens (teacher forcing), while during inference, it generates tokens sequentially, conditioning each prediction on its own prior outputs.
 
-![rnn_encoder_decoder](https://github.com/fudonglin/fudonglin.github.io/blob/main/assets/images/rnn_encoder_decoder.png?raw=true)
+![rnn_encoder_decoder](https://github.com/fudonglin/fudonglin.github.io/blob/main/_posts/2025-07-04-transformer/rnn_encoder_decoder.png?raw=true)
 
 ​								Figure 1: RNN-based Sequence-to-Sequence Learning for Machine Translation.
 
@@ -48,7 +50,7 @@ However, RNN-based encoder-decoder architectures suffer from two major limitatio
 
 ## Transformers
 
-![Transformers](transformers.png)
+![Transformers](https://github.com/fudonglin/fudonglin.github.io/blob/main/_posts/2025-07-04-transformer/transformers.png?raw=true)
 
 ​								Figure 2: Illustrations of the Transformer architecture for machine translation.
 
@@ -90,7 +92,7 @@ We have seen how Masked Multi-Head Attention enables parallelization, effectivel
 
 #### Tokenization
 
-![tokenizer](tokenizer.png)
+![tokenizer](https://github.com/fudonglin/fudonglin.github.io/blob/main/_posts/2025-07-04-transformer/tokenizer.png?raw=true)
 
 ​													Figure 3: Example of Tokenizer.
 
@@ -100,7 +102,7 @@ Before discussing Multi-Head Attention, we first need to understand tokenization
 
 
 
-![tokenization](tokenization.png)
+![tokenization](https://github.com/fudonglin/fudonglin.github.io/blob/main/_posts/2025-07-04-transformer/tokenization.png?raw=true)
 
 ​												Figure 4: The End-to-End Workflow of Tokenizer.	
 
@@ -118,7 +120,7 @@ In the field of computer vision, we are still awaiting our own “ChatGPT moment
 
 ### Single-Head Attention
 
-![image-20250614230247926](attention.png)
+![image-20250614230247926](https://github.com/fudonglin/fudonglin.github.io/blob/main/_posts/2025-07-04-transformer/attention.png?raw=true)
 
 ​									Figure 5: The Single-Head and Multi-Head Attenion method.
 
