@@ -110,13 +110,13 @@ This allows the model to predict all tokens in parallel while preserving the cor
 The following example illustrates how Masked Multi-Head Attention enables the simultaneous prediction of tokens at different positions:
 
 $$
-\begin{align}
-\text{"<bos> <mask> <mask> <mask> <mask> <mask>"} \rightarrow \text{"New"} \\
-\text{"<bos> New <mask> <mask> <mask> <mask>"} \rightarrow \text{"York"} \\
-\cdots \\
-\text{"<bos> New York is a <mask>"} \rightarrow \text{"city"} \\
-\text{"<bos> New York is a city"} \rightarrow \text{"<eos>"}.
-\end{align}
+\begin{gathered}
+  \text{"<bos> <mask> <mask> <mask> <mask> <mask>"} \rightarrow \text{"New"} \\
+  \text{"<bos> New <mask> <mask> <mask> <mask>"} \rightarrow \text{"York"} \\
+  \cdots \\
+  \text{"<bos> New York is a <mask>"} \rightarrow \text{"city"} \\
+  \text{"<bos> New York is a city"} \rightarrow \text{"<eos>"}.
+\end{gathered}
 $$
 
 
