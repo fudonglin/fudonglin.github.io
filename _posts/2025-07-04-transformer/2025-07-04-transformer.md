@@ -255,8 +255,8 @@ As illustrated below, omitting $ \sqrt{d\_{k}} $ can cause the model to assign n
 
 $$
 \begin{gathered}
-w = [10^{-6}, 10^{-3}, 0.99,  10^{-6}, \dots, 10^{-6}] \quad \text{(w/o } \sqrt{d_k} \text{)}, \\
-w = [0.01, 0.1, 0.85, \dots, 0.01] \quad \text{(w/ } \sqrt{d_k} \text{)}.
+\mathbf{w} = [10^{-6}, 10^{-3}, 0.99,  10^{-6}, \dots, 10^{-6}] \quad \text{(without } \sqrt{d_k} \text{)}, \\
+\mathbf{w} = [0.01, 0.1, 0.85, \dots, 0.01] \quad \text{(with } \sqrt{d_k} \text{)}.
 \end{gathered}
 $$
 
@@ -280,15 +280,14 @@ $$
 where $i$ denote the $i$-th attention head, and $\mathbf{W}^{O}$ is a learnable matrix.
 
 Let's see an example for better understanding the Multi-Head Attention. 
-Assume the hidden dimension $d\_{\textrm{model}}$ is 512 and the number of attention heads is 8. 
+Assume the hidden dimension $d\_{\textrm{model}}$ is 512, and the number of attention heads is 8. 
 Then, Multi-Head Attention splits the hidden dimension into 8 subspaces, each with a dimensionality of $d\_{k} = 64$. Within each subspace, a separate Single-Head Attention operation is performed. 
 The outputs from all heads are then concatenated and projected using the weight matrix $\mathbf{W}^{O}$ to produce the final output embedding.
 
 Despite effectiveness, the authors did not offer a clear explanation for why Multi-Head Attention outperforms Single-Head Attention when both share the same hidden dimension size.
-
 Based on my previous experiments with various Vision Transformers (ViTs) [3], this phenomenon may be partly explained. 
 I found that activating only the top 75% most responsive parameters resulted in just a 0.1% to 0.4% drop in performance on the ImageNet benchmark across multiple ViT variants. 
-This suggests that the remaining 25% of parameters contribute minimally to the final output. 
+This suggests that the remaining 25% of parameters have not been utilized and contribute minimally to the final performance. 
 One possible reason why Multi-Head Attention is more effective is that dividing a large hidden dimension into smaller subspaces can reduce the number of inactive or underutilized parameters, thereby enhancing the effective utilization of neurons.
 
 
