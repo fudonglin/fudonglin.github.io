@@ -2,7 +2,11 @@
 
 ## Preface
 
-The first time I read the Transformer paper [1] was in the spring of 2021, during the first year of my Ph.D. studies. At the time, I found the paper difficult to fully understand. However, as I progressed through my Ph.D., I revisited it several times, and each reading revealed new insights into its core ideas. Today, Artificial Intelligence (AI)—particularly Large Language Models like ChatGPT—is deeply integrated into nearly every aspect of our lives. If you're interested in AI and want to build a solid foundation, I highly recommend starting with this paper.
+The first time I read the Transformer paper [1] was in the spring of 2021, during the first year of my Ph.D. study. 
+At the time, it was difficult for me to fully understand this paper. 
+As I progressed through my Ph.D., I revisited this paper several times, and each reading revealed new insights into its core ideas. 
+Today, Artificial Intelligence (AI)—particularly Large Language Models like ChatGPT—is deeply integrated into nearly every aspect of our lives. 
+If you're interested in AI and want to build a solid foundation, I highly recommend starting with this paper.
 
 
 
@@ -27,18 +31,27 @@ $$
 
 
 
-where $mathbf{\theta}$ denotes the parameters to be learned. 
-For example, the AR model predicts the word "city" based on the context of  "New York is a" and "纽约是一座城市", i.e., $p\_{\mathbf{\theta}} (\textrm{"city"}| \textrm{"New York is a"}, ~\text{"纽约是一座城市"})$.
+where $\mathbf{\theta}$ denotes the parameters to be learned. 
+For example, the AR model predicts the word `"city"` based on the context of  `"New York is a"` and `"纽约是一座城市"`, i.e., $p\_{\mathbf{\theta}} (\textrm{"city"} ~|~ \textrm{"New York is a"}, ~\text{"纽约是一座城市"})$.
 
 
 
 ## Recurrent Neural Networks (RNNs) for Machine Translation 
 
-For machine translation, the encoder-decoder architecture is a widely adopted framework for building the Autoregressive (AR) model. Before the emergence of Transformers, both the encoder and decoder were commonly implemented using Recurrent Neural Networks (RNNs). Here, the encoder RNN processes a variable-length input sequence from the source language and encodes it into a fixed-size hidden state, which serves as a summary of the input. This final hidden state is then passed to the decoder at every decoding step to condition the output on the source sequence. The decoder RNN generates the target-language output token by token, relying on both the encoded input and the previously generated tokens. During training, it is guided by the ground truth target tokens (teacher forcing), while during inference, it generates tokens sequentially, conditioning each prediction on its own prior outputs.
+For machine translation, the encoder-decoder architecture is a widely adopted framework for building the Autoregressive (AR) model. 
+Before the emergence of Transformers, both the encoder and decoder were commonly implemented using Recurrent Neural Networks (RNNs). 
+
+Here, the encoder RNN processes a variable-length input sequence from the source language and encodes it into a fixed-size hidden state, which serves as a summary of the input. 
+This final hidden state is then passed to the decoder at every decoding step to condition the output on the source sequence. 
+The decoder RNN generates the target-language output token by token, relying on both the encoded input and the previously generated tokens. 
+
+During training, this process is guided by the ground truth target tokens (i.e., teacher forcing), while during inference, it generates tokens sequentially, conditioning each prediction on its own prior outputs.
+
 
 ![rnn_encoder_decoder](https://github.com/fudonglin/fudonglin.github.io/blob/main/_posts/2025-07-04-transformer/rnn_encoder_decoder.png?raw=true)
 
-​								Figure 1: RNN-based Sequence-to-Sequence Learning for Machine Translation.
+Figure 1: RNN-based Sequence-to-Sequence Learning for Machine Translation.
+
 
 Figure 1 illustrates how the encoder-decoder architecture is used for machine translation. Special tokens such as `<bos>` (beginning of sequence) and `<eos>` (end of sequence) are used to mark the start and end of the target sequence, respectively. 
 
@@ -50,7 +63,7 @@ However, RNN-based encoder-decoder architectures suffer from two major limitatio
 
   
 
-> If you're interested in learning more about the RNN-based encoder-decoder architecture for machine translation, I recommend reading the reference [2]: [Sequence-to-Sequence Learning for Machine Translation](https://www.d2l.ai/chapter_recurrent-modern/seq2seq.html#encoderdecoder-for-sequence-to-sequence-learning).
+> If you're interested in learning more about the RNN-based encoder-decoder architecture for machine translation, please read the reference [2]: [Sequence-to-Sequence Learning for Machine Translation](https://www.d2l.ai/chapter_recurrent-modern/seq2seq.html#encoderdecoder-for-sequence-to-sequence-learning).
 
 
 
