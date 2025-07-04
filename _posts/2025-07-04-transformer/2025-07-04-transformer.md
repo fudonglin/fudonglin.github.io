@@ -266,17 +266,25 @@ $$
 
 ### Multi-Head Attention
 
-The key idea of Multi-Head Attention is to allow the model to attend to information from different representation subspaces at different positions in parallel:
+In the original paper, the authors found that optimizing Transformers across multiple smaller hidden spaces can lead to better generalization and efficiency compared to relying on a single large unified space. 
+%
+Driven by this observation, the authors propose the Multi-Head Attention, expressed as below:
 
 $$
+\begin{gathered}
 \text{MultiHead}(Q, K, V) = \text{Concat}(\text{head}_1, \dots, \text{head}_h) W^O \\
 \text{where} \quad \text{head}_i = \text{Attention}(QW_i^Q, KW_i^K, VW_i^V) \quad
-\text{and} \quad \text{Attention}(Q, K, V) = \text{softmax}\left( \frac{QK^T}{\sqrt{d_k}} \right) V
+\text{and} \quad \text{Attention}(Q, K, V) = \text{softmax}\left( \frac{QK^T}{\sqrt{d_k}} \right) V.
+\end{gathered}
 $$
 
-In the original paper, the authors found that optimizing Transformers across multiple smaller hidden spaces can lead to better generalization and efficiency compared to relying on a single large unified space. However, they did not offer a clear explanation for why Multi-Head Attention outperforms Single-Head Attention when both share the same total hidden dimension.
 
-Based on my previous experiments with various Vision Transformers (ViTs) [3], this phenomenon may be partly explained. I found that activating only the top 75% most responsive parameters resulted in just a 0.1% to 0.4% drop in performance on the ImageNet benchmark across multiple ViT variants. This suggests that the remaining 25% of parameters contribute minimally to the final output. One possible reason why Multi-Head Attention is more effective is that dividing a large hidden dimension into smaller subspaces can reduce the number of inactive or underutilized parameters, thereby enhancing the effective utilization of neurons.
+Despite effectiveness, the authors did not offer a clear explanation for why Multi-Head Attention outperforms Single-Head Attention when both share the same hidden dimension size.
+
+Based on my previous experiments with various Vision Transformers (ViTs) [3], this phenomenon may be partly explained. 
+I found that activating only the top 75% most responsive parameters resulted in just a 0.1% to 0.4% drop in performance on the ImageNet benchmark across multiple ViT variants. 
+This suggests that the remaining 25% of parameters contribute minimally to the final output. 
+One possible reason why Multi-Head Attention is more effective is that dividing a large hidden dimension into smaller subspaces can reduce the number of inactive or underutilized parameters, thereby enhancing the effective utilization of neurons.
 
 
 
@@ -297,10 +305,14 @@ Currently, there are two main types of positional embeddings: fixed (non-learnab
 
 
 In the original Transformer paper, the authors represent the positional information using  a combination of sine and cosine functions at varying frequencies:
+
 $$
+\begin{gathered}
 PE(pos, 2i) = \sin(\frac{pos}{10000^{2i/d_{model}}}) \\
 PE(pos, 2i+1) = \cos(\frac{pos}{10000^{2i/d_{model}}})
+\end{gathered}
 $$
+
 Here, $pos$ denotes the position of a word (or token) in the sequence, $d_{model}$ is the dimensionality of the model's embeddings (e.g., $d_{model} = 512$ used in the original paper), and $i \in \{0, 1, 2, \dots, d_{model} - 1 \}$ indexes the embedding dimensions. The goal of positional embedding is to transform a one-dimensional position index into a high-dimensional vector representation, enabling it to be directly added to the token embedding. Note that, the positional representation should satisfy the following criteria:
 
 - **Uniqueness**: Each index (i.e., word position in a sentence) should be mapped to a unique embedding.
