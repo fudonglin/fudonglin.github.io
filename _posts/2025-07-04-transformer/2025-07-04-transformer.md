@@ -69,39 +69,57 @@ However, RNN-based encoder-decoder architectures suffer from two major limitatio
 
 ## Transformers
 
+
+The Transformer architecture addresses two key limitations of the RNN-based encoder-decoder model: (i) limited parallelization, and (ii) difficulty in capturing long-range dependencies. 
+
 ![Transformers](https://github.com/fudonglin/fudonglin.github.io/blob/main/_posts/2025-07-04-transformer/transformers.png?raw=true)
 
-​								Figure 2: Illustrations of the Transformer architecture for machine translation.
+Figure 2: Illustrations of the Transformer architecture for machine translation.
 
 
-
-The Transformer architecture addresses two key limitations of the RNN-based encoder-decoder model: (i) limited parallelization, and (ii) difficulty in capturing long-range dependencies. Like RNNs, Transformers also employ an encoder-decoder structure for machine translation. Figure 2 show the Transformer architecture for machine translation. Specifically, the encoder uses Multi-Head Self-Attention on the source language to learn contextualized embeddings. The decoder performs two types of Multi-Head Attention mechanisms:
+Like RNNs, Transformers also employ an encoder-decoder structure for machine translation. 
+Figure 2 shows the model architecture of Transformers. 
+Specifically, the encoder uses Multi-Head Self-Attention on the source language to learn contextualized embeddings. The decoder performs two types of Multi-Head Attention mechanisms:
 
 (i) **Masked Multi-Head Self-Attention** on the target language to preserve the autoregressive property, and
 
-(ii ) **Cross-Attention** between the target and source languages to incorporate information from the source input.
+(ii) **Multi-Head Cross-Attention** between the target and source languages to incorporate information from the source input.
 
 
 
-Now, let's look at an example to illustrate the elegant design within the Transformer architecture. Suppose we want to predict the second English word, "York". According to the Autoregressive (AR) model, the Transformer can only attend to the source sentence — "纽约是一座城市<bos>" — and the preceding tokens in the target sentence — "<bos> New". Therefore, the model estimates the following conditional probability:
+Now, let's look at an example to illustrate the elegant design within the Transformer architecture. 
+Suppose we want to predict the second English word, i.e., `"York"`. 
+According to the Autoregressive (AR) model, the Transformer can only attend to the source sentence, i.e., `"纽约是一座城市<bos>"`, and the preceding tokens in the target sentence, i.e., `"<bos> New"`. 
+Therefore, the AR model predicts the next word by estimating the following conditional probability:
+
 $$
-p_{\boldsymbol{\theta}} (\text{``York"}| \text{``<bos> New <mask> <mask> <mask> <mask>"}, \text{``纽约是一座城市 <bos>''}).
+p_{\mathbf{\theta}} (\text{"York"}| \text{"<bos> New <mask> <mask> <mask> <mask>"}, \text{"纽约是一座城市 <bos>''}).
 $$
-Here, the purpose of Masked Multi-Head Attention in the decoder is to prevent the model from accessing future tokens in the target sequence. This raises an important question: **do we need to predict each word sequentially, as in RNN-based machine translation—for example, first "New," then "York," followed by "is," and so on?** The answer is  **NO** during training, but **YES** during inference.
+
+Here, the purpose of Masked Multi-Head Attention in the decoder is to prevent the model from accessing future tokens in the target sequence. This raises an important question: 
+
+**Do we need to predict each word sequentially? For example, first "New", then "York", followed by "is", and so on?** 
+
+The answer is  **NO** during training, but **YES** during inference.
 
 
 
-During training, since the ground-truth target tokens are available, Transformers leverage Masked Multi-Head Attention to enable parallelization. The entire target sequence is fed into the decoder at once, but attention masks are used to ensure that each position can only attend to previous tokens—mimicking autoregressive behavior. This allows the model to predict all tokens in parallel while preserving the correct dependency structure. The following example illustrates how Masked Multi-Head Attention enables the simultaneous prediction of tokens at different positions:
+During training, since the ground-truth target tokens are available, Transformers leverage Masked Multi-Head Attention to enable the autoregressive property. 
+The entire target sequence is fed into the decoder at once, but attention masks are used to ensure that each position can only attend to previous tokens—mimicking autoregressive behavior. 
+This allows the model to predict all tokens in parallel while preserving the correct dependency structure. 
+The following example illustrates how Masked Multi-Head Attention enables the simultaneous prediction of tokens at different positions:
+
 $$
-\text{``<bos> <mask> <mask> <mask> <mask> <mask>"} \rightarrow \text{``New''} \\
-\text{``<bos> New <mask> <mask> <mask> <mask>"} \rightarrow \text{``York''} \\
+\text{`"<bos> <mask> <mask> <mask> <mask> <mask>"`} \rightarrow \text{`"New"`} \\
+\text{`"<bos> New <mask> <mask> <mask> <mask>"`} \rightarrow \text{`"York"`} \\
 \cdots \\
-\text{``<bos> New York is a <mask>"} \rightarrow \text{``city''} \\
-\text{``<bos> New York is a city"} \rightarrow \text{``<eos>''}.
+\text{`"<bos> New York is a <mask>"`} \rightarrow \text{`"city"`} \\
+\text{`"<bos> New York is a city"`} \rightarrow \text{`"<eos>"`}.
 $$
 
 
-During inference, since the ground-truth tokens are not available, the Transformer must generate the target sequence one token at a time, predicting each word sequentially. This sequential decoding is the reason why models like ChatGPT—built on decoder-only Transformer architectures—can be relatively slow during inference.
+During inference, since the ground-truth tokens are not available, the Transformer must generate the target sequence one token at a time, predicting each word sequentially. 
+This sequential decoding is the reason why models like ChatGPT—built on decoder-only Transformer architectures—can be relatively slow during inference.
 
 
 
