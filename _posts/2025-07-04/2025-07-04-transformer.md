@@ -16,8 +16,8 @@ Let's begin our journey with a machine translation task (translating from Chines
 
 
 
-In this blog, we explore machine translation using an Autoregressive (AR) model. Let $\mathbf{x}$ and $\mathbf{y}$ denote the source and target language sequences, respectively. 
-Given a target sentence of length $T$, we use $\mathbf{y}_{t}$ to represent the word at position $t$, and $\mathbf{y}_{<t}$ to denote all preceding words. 
+In this blog, we explore machine translation using an Autoregressive (AR) model. Let $\mathbf{x}$ and $\textbf{y}$ denote the source and target language sequences, respectively. 
+Given a target sentence of length $T$, we use $y_{t}$ to represent the word at position $t$, and $\mathbf{y}_{<t}$ to denote all preceding words. 
 The AR model generates the translation one word at a time, predicting $\mathbf{y}_{t}$ based on the source input $\mathbf{x}$ and the full semantic context provided by $\mathbf{y}_{<t}$:
 
 $$
