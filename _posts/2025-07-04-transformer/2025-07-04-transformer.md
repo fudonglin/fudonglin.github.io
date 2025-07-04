@@ -288,7 +288,7 @@ Despite effectiveness, the authors did not offer a clear explanation for why Mul
 Based on my previous experiments with various Vision Transformers (ViTs) [3], this phenomenon may be partly explained. 
 I found that activating only the top 75% most responsive parameters resulted in just a 0.1% to 0.4% drop in performance on the ImageNet benchmark across multiple ViT variants. 
 This suggests that the remaining 25% of parameters have not been utilized and contribute minimally to the final performance. 
-One possible reason why Multi-Head Attention is more effective is that dividing a large hidden dimension into smaller subspaces can reduce the number of inactive or underutilized parameters, thereby enhancing the effectiveness and generalization of Transformers.
+One possible reason why Multi-Head Attention is more effective is that **dividing a large hidden dimension into smaller subspaces can reduce the number of inactive or underutilized parameters**, thereby enhancing the effectiveness and generalization of Transformers.
 
 
 
@@ -301,14 +301,15 @@ Unlike RNNs or CNNs, the **Transformer architecture is order-agnostic**:
 
 This limitation arises because attention is essentially a weighted sum over all tokens in the input sequence. As a result, the model requires **explicit positional information** to capture the structure of the input—for example:
 
-- “New York is a city”  $\neq$  “City is a New York”.   
+- "New York is a city"  $\neq$  "City is a New York";   
 - Or to recognize whether one word comes before or after another.
 
-Currently, there are two main types of positional embeddings: fixed (non-learnable) and learnable embeddings. In the original paper, the authors used fixed sinusoidal positional embeddings. However, learnable positional embeddings have become increasingly popular in recent models. For example, the ViT architecture adopts learnable embeddings to improve model flexibility and performance.
+Currently, there are two main types of positional embeddings: **fixed (non-learnable) and learnable embeddings**. 
+In the original paper, the authors used fixed sinusoidal positional embeddings. However, learnable positional embeddings have become increasingly popular in recent models. For example, the ViT architecture adopts learnable embeddings to improve model flexibility and performance.
 
 
 
-In the original Transformer paper, the authors represent the positional information using  a combination of sine and cosine functions at varying frequencies:
+In the paper, the authors represent the positional information using  a combination of sine and cosine functions at varying frequencies:
 
 $$
 \begin{gathered}
@@ -317,24 +318,30 @@ PE(pos, 2i+1) = \cos(\frac{pos}{10000^{2i/d_{model}}}).
 \end{gathered}
 $$
 
-Here, $pos$ denotes the position of a word (or token) in the sequence, $d_{model}$ is the dimensionality of the model's embeddings (e.g., $d_{model} = 512$ used in the original paper), and $i \in \{0, 1, 2, \dots, d_{model} - 1 \}$ indexes the embedding dimensions. The goal of positional embedding is to transform a one-dimensional position index into a high-dimensional vector representation, enabling it to be directly added to the token embedding. Note that, the positional representation should satisfy the following criteria:
+Here, $pos$ denotes the position of a word (or token) in the sequence, $d\_{\textrm{model}}$ is the dimensionality of the model's embeddings (e.g., $d_{\textrm{model}} = 512$ used in the paper), and $i \in \{0, 1, 2, \dots, d_{\textrm{model}} - 1 \}$ indexes the embedding dimensions. 
+The goal of positional embedding is to transform a one-dimensional position index into a high-dimensional embedding representation, enabling it to be directly added to the token embedding. 
+Note that the positional representation should satisfy the following criteria:
 
 - **Uniqueness**: Each index (i.e., word position in a sentence) should be mapped to a unique embedding.
 - **Consistency**: The relative distance between any two positions should remain consistent, regardless of the total sequence length.
 - **Generalization**: The embedding scheme should generalize to longer sequences beyond those seen during training, without requiring retraining or architectural changes. Additionally, the embedding values should remain bounded to ensure numerical stability.
 - **Determinism**: The positional encoding must be deterministic, producing the same output for the same input every time.
 
-If you're interested in how the sine-cosine positional encoding satisfies the above criteria, please refer to references [4] and [5] for detailed explanations. 
+> If you're interested in how the sine-cosine positional encoding satisfies the above criteria, please refer to references [4] and [5] for detailed explanations. 
 
 
 
-In this blog, we’ll focus on implementing positional embeddings. When I first encountered the concept, I was confused by the roles of `pos` and `i` in the formula. Let’s walk through an example to clarify. Consider the sentence *"New York is a city"*. Suppose we want to compute the positional embedding for the word *"city"*. Since *"city"* is the fourth word in the sequence (with zero-based indexing), its position index is 3. We set $\text{pos} = 3$ and $d_{\text{model}} = 512$. 
+When I first encountered the positional embedding, I was confused by the roles of `pos` and `i` in the equation. 
+Let’s walk through an example to clarify. 
+Given the sentence `"New York is a city"`, suppose we want to compute the positional embedding for the word `"city"`. 
+Since `"city"` is the fourth word in the sequence (with zero-based indexing), its position index is 3. We set $\text{pos} = 3$ and $d_{\text{model}} = 512$. 
 
-According to the sinusoidal positional encoding scheme, the values at even-numbered dimensions are computed using the sine function, while the values at odd-numbered dimensions use the cosine function. This maps the position index 3 to a unique 512-dimensional embedding vector.
+According to the sinusoidal positional encoding scheme, the values at even-numbered dimensions are computed using the sine function, while the values at odd-numbered dimensions use the cosine function. 
+This maps the position index 3 to a unique 512-dimensional positional embedding.
 
 
 
-If you're still unsure how positional embeddings work, try running the following code snippet:
+If you're still unsure how positional embeddings work, try running the following code:
 
 ```python
 class PositionalEncoding(nn.Module):
