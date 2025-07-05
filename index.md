@@ -1,3 +1,1 @@
-Why climb a mountain? Because it is there.
-
-—George Mallory 
+Why climb a mountain? Because it is there.  —George Mallory 
