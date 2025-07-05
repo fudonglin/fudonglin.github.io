@@ -139,16 +139,16 @@ Before discussing Multi-Head Attention, we first need to understand tokenization
 Therefore, we must convert human language into numerical representations that models can understand. 
 In simple terms, a tokenizer functions like a dictionary: each token (usually a word or subword) is mapped to a unique index and a learnable embedding:
 
-| Token  | Index |              Embedding               |
-| :----: | :---: | :----------------------------------: |
-| <bos>  |   0   | [-0.9200, -0.1600, -0.3100, -0.1000] |
-|  New   |   1   | [ 0.4800, -1.2000, -0.4400,  2.2100] |
-|  York  |   2   | [ 0.5600, -0.3500, -1.0900, -0.4300] |
-|   is   |   3   | [ 1.5700,  0.5600,  0.4800, -1.0000] |
-|   a    |   4   | [-0.8300,  0.0400,  0.4900, -1.0700] |
-| <mask> |   5   | [ 1.2800, -1.3300,  0.6100, -1.2800] |
-|  city  |   6   | [ 0.6500, -0.6000, -0.8700,  0.5900] |
-| <eos>  |   7   | [ 1.0600,  1.2400, -0.7100,  0.8100] |
+| Token    | Index | Embedding                            |
+| :------- | :---- | :----------------------------------- |
+| \<bos\>  | 0     | [-0.9200, -0.1600, -0.3100, -0.1000] |
+| New      | 1     | [ 0.4800, -1.2000, -0.4400,  2.2100] |
+| York     | 2     | [ 0.5600, -0.3500, -1.0900, -0.4300] |
+| is       | 3     | [ 1.5700,  0.5600,  0.4800, -1.0000] |
+| a        | 4     | [-0.8300,  0.0400,  0.4900, -1.0700] |
+| \<mask\> | 5     | [ 1.2800, -1.3300,  0.6100, -1.2800] |
+| city     | 6     | [ 0.6500, -0.6000, -0.8700,  0.5900] |
+| \<eos\>  | 7     | [ 1.0600,  1.2400, -0.7100,  0.8100] |
 
 
 
