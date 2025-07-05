@@ -278,13 +278,13 @@ Driven by this observation, the authors propose the Multi-Head Attention, expres
 
 $$
 \begin{gathered}
-\text{MultiHead}(\mathbf{Q}, \mathbf{K}, \mathbf{V}) = \text{Concat}(\text{head}_1, \dots, \text{head}_h) \mathbf{W}^O \\
-\text{where} \quad \text{head}_i = \text{Attention}(\mathbf{Q} \mathbf{W}_i^Q, \mathbf{K} \mathbf{W}_i^K, \mathbf{V} \mathbf{W}_i^V) \quad
-\text{and} \quad \text{Attention}(\mathbf{Q}, \mathbf{K}, \mathbf{V}) = \text{softmax}\left( \frac{\mathbf{Q} \mathbf{K}^T}{\sqrt{d_k}} \right) \mathbf{V},
+\text{MultiHead}(\mathbf{Q}, \mathbf{K}, \mathbf{V}) = \text{Concat}(\text{head}_1, \dots, \text{head}_h) \mathbf{W}^O, \\
+\text{head}_i = \text{Attention}(\mathbf{Q} \mathbf{W}_i^Q, \mathbf{K} \mathbf{W}_i^K, \mathbf{V} \mathbf{W}_i^V), \\
+\text{Attention}(\mathbf{Q}, \mathbf{K}, \mathbf{V}) = \text{softmax}\left( \frac{\mathbf{Q} \mathbf{K}^T}{\sqrt{d_k}} \right) \mathbf{V}.
 \end{gathered}
 $$
 
-where $i$ denote the $i$-th attention head, and $\mathbf{W}^{O}$ is a learnable matrix.
+Here, $i$ denote the $i$-th attention head, and $\mathbf{W}^{O}$ is a learnable matrix.
 
 Let's see an example for better understanding the Multi-Head Attention. 
 Assume the hidden dimension $d\_{\textrm{model}}$ is 512, and the number of attention heads is 8. 
