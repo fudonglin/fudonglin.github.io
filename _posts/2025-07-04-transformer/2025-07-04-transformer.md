@@ -380,7 +380,7 @@ class PositionalEncoding(nn.Module):
 
 ## Reference
 
-[1] Vaswni et. al., Attention Is All You Need, NeurIPS 2017
+[1] Attention Is All You Need, NeurIPS 2017
 
 [2] [Sequence-to-Sequence Learning for Machine Translation](https://www.d2l.ai/chapter_recurrent-modern/seq2seq.html#encoderdecoder-for-sequence-to-sequence-learning)
 
