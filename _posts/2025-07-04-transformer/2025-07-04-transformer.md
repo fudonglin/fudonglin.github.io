@@ -74,7 +74,7 @@ The Transformer architecture addresses two key limitations of the RNN-based enco
 
 ![Transformers](https://github.com/fudonglin/fudonglin.github.io/blob/main/_posts/2025-07-04-transformer/transformers.png?raw=true)
 
-Figure 2: Illustrations of the Transformer architecture for machine translation.
+Figure 2: Illustration of the Transformer architecture for machine translation.
 
 
 Like RNNs, Transformers also employ an encoder-decoder structure for machine translation. 
@@ -90,7 +90,7 @@ Specifically, the encoder uses Multi-Head Self-Attention on the source language 
 Now, let's look at an example to illustrate the elegant design within the Transformer architecture. 
 Suppose we want to predict the second English word, i.e., `"York"`. 
 According to the Autoregressive (AR) model, the Transformer can only attend to the source sentence, i.e., `"纽约是一座城市<bos>"`, and the preceding tokens in the target sentence, i.e., `"<bos> New"`. 
-Therefore, the AR model predicts the next word by estimating the following conditional probability:
+Therefore, the AR model predicts the word `"York"` by estimating the following conditional probability:
 
 $$
 p_{\mathbf{\theta}} (\textrm{"York"}| \textrm{"<bos> New <mask> <mask> <mask> <mask>"}, \textrm{"纽约是一座城市 <bos>"}).
@@ -128,16 +128,16 @@ This sequential decoding is the reason why models like ChatGPT—built on decode
 ### Attention
 
 We have seen how Masked Multi-Head Attention effectively enables the autoregressive property, thereby significantly enhancing parallelization—a key limitation of RNNs. 
-Now, let’s take a closer look at Multi-Head Attention itself and explore how it helps overcome the long-range dependency issue. This challenge arises in RNNs because the model relies solely on the final hidden state to encode the entire input sequence.
+Now, let’s take a closer look at Multi-Head Attention itself and explore how it helps overcome the long-range dependency issue. 
+This challenge arises in RNNs because the model relies solely on the last hidden state to encode all preceding words.
 
 #### Tokenization
 
 Before discussing Multi-Head Attention, we first need to understand tokenization. 
 
-**Why do we need a Tokenizer?** The reason is that computers do not understand human language—they only process binary signals. 
+**Why do we need a Tokenizer in the language model?** The reason is that computers do not understand human language—they only process binary signals. 
 Therefore, we must convert human language into numerical representations that models can understand. 
 In simple terms, a Tokenizer functions like a dictionary: each token (usually a word or subword) is mapped to a unique index and a learnable embedding, as shown in Figure 3. 
-In practice, we often directly use pre-trained Tokenizers, such as those available from Hugging Face.
 
 
 ![tokenizer](https://github.com/fudonglin/fudonglin.github.io/blob/main/_posts/2025-07-04-transformer/tokenizer.png?raw=true)
@@ -155,10 +155,11 @@ Figure 4: The End-to-End Workflow of Tokenizer.
 
 
 
-Personally, I believe the Tokenizer plays a critical role in the recent success of LLMs, as it effectively bridges the gap between human language and computer-readable input. For example, while vision models tend to generate unrealistic or distorted images, language models are much less likely to produce non-existent words—thanks in large part to robust tokenization. 
+Personally, I believe the tokenizer plays a critical role in the recent success of Large Language Models (LLMs), as it effectively bridges the gap between human language and computer-readable input. 
+For example, while vision models tend to generate unrealistic or distorted images, language models are much less likely to produce non-existent words—thanks in large part to robust tokenization. 
 
 In the field of computer vision, we are still awaiting our own "ChatGPT moment". 
-Perhaps the breakthrough lies in developing vision Tokenizers capable of bridging the gap between visual data and machine understanding. It’s important to note, however, that language tokenization operates over a discrete and finite vocabulary (e.g., approximately 30,000 commonly used English tokens), whereas vision tokenization must grapple with a continuous and effectively infinite input space if we aim to model the visual world in its entirety. 
+Perhaps the breakthrough lies in developing vision tokenizers capable of bridging the gap between visual data and machine understanding. It’s important to note, however, that language tokenization operates over a discrete and finite vocabulary (e.g., approximately 30,000 commonly used English tokens), whereas vision tokenization must grapple with a continuous and effectively infinite input space if we aim to model the visual world in its entirety. 
 With that being said, building vision tokenizers is much more challenging than their language counterparts.
 
 
@@ -207,7 +208,7 @@ $$
 \text{"<bos> New York is a <mask>"} \\
 \downarrow \\
 \mathbf{X} = [x_0, x_1, x_2, x_3, x_4, x_5] \\
-\mathbf{M}\_{v} \cdot \mathbf{X} ~\downarrow \\
+\mathbf{M}_{v} \cdot \mathbf{X} ~\downarrow \\
 \mathbf{V} = [v_0, v_1, v_2, v_3, v_4, v_5].
 \end{gathered}
 $$
@@ -237,7 +238,7 @@ $$
 p_{\mathbf{\theta}}(\text{"city"} \mid \text{"<bos> New York is a <mask>"}, \text{"纽约是一座城市<eos>"}).
 $$
 
-Ideally, the model should assign higher attention weights to the tokens `"New"`, `"York"`, as well as the corresponding source-language tokens `"城"` and `"市"`.
+Ideally, the model should assign higher attention weights to the tokens `"New"` and `"York"`, as well as the corresponding source-language tokens `"城"` and `"市"`.
 
 
 
@@ -266,7 +267,7 @@ $$
 
 ### Multi-Head Attention
 
-In the original paper, the authors found that optimizing Transformers across multiple smaller hidden spaces can lead to better generalization and efficiency compared to relying on a single large unified space. 
+In the paper, the authors found that optimizing Transformers across multiple smaller hidden spaces can lead to better generalization and efficiency compared to relying on a single large unified space. 
 Driven by this observation, the authors propose the Multi-Head Attention, expressed as below:
 
 $$
@@ -305,16 +306,16 @@ This limitation arises because attention is essentially a weighted sum over all 
 - Or to recognize whether one word comes before or after another.
 
 Currently, there are two main types of positional embeddings: **fixed (non-learnable) and learnable embeddings**. 
-In the original paper, the authors used fixed sinusoidal positional embeddings. However, learnable positional embeddings have become increasingly popular in recent models. For example, the ViT architecture adopts learnable embeddings to improve model flexibility and performance.
+In the paper, the authors used fixed sinusoidal positional embeddings. However, learnable positional embeddings have become increasingly popular in recent models. For example, the ViT architecture adopts learnable embeddings to improve model flexibility and performance.
 
 
 
-In the paper, the authors represent the positional information using  a combination of sine and cosine functions at varying frequencies:
+The authors represent the positional information using  a combination of sine and cosine functions at varying frequencies:
 
 $$
 \begin{gathered}
-PE(pos, 2i) = \sin(\frac{pos}{10000^{2i/d_{model}}}), \\
-PE(pos, 2i+1) = \cos(\frac{pos}{10000^{2i/d_{model}}}).
+PE(pos, 2i) = \sin(\frac{pos}{10000^{2i/d_{\textrm{model}}}}), \\
+PE(pos, 2i+1) = \cos(\frac{pos}{10000^{2i/d_{\textrm{model}}}}).
 \end{gathered}
 $$
 
