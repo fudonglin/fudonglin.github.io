@@ -137,21 +137,27 @@ Before discussing Multi-Head Attention, we first need to understand tokenization
 
 **Why do we need a Tokenizer in the language model?** The reason is that computers do not understand human language—they only process binary signals. 
 Therefore, we must convert human language into numerical representations that models can understand. 
-In simple terms, a Tokenizer functions like a dictionary: each token (usually a word or subword) is mapped to a unique index and a learnable embedding, as shown in Figure 3. 
+In simple terms, a tokenizer functions like a dictionary: each token (usually a word or subword) is mapped to a unique index and a learnable embedding:
+
+| Token  | Index |              Embedding               |
+| :----: | :---: | :----------------------------------: |
+| <bos>  |   0   | [-0.9200, -0.1600, -0.3100, -0.1000] |
+|  New   |   1   | [ 0.4800, -1.2000, -0.4400,  2.2100] |
+|  York  |   2   | [ 0.5600, -0.3500, -1.0900, -0.4300] |
+|   is   |   3   | [ 1.5700,  0.5600,  0.4800, -1.0000] |
+|   a    |   4   | [-0.8300,  0.0400,  0.4900, -1.0700] |
+| <mask> |   5   | [ 1.2800, -1.3300,  0.6100, -1.2800] |
+|  city  |   6   | [ 0.6500, -0.6000, -0.8700,  0.5900] |
+| <eos>  |   7   | [ 1.0600,  1.2400, -0.7100,  0.8100] |
 
 
-![tokenizer](https://github.com/fudonglin/fudonglin.github.io/blob/main/_posts/2025-07-04-transformer/tokenizer.png?raw=true)
 
-​Figure 3: Example of Token, Index, and Embedding mapping.
-
-
-
-Figure 4 illustrates how the tokenizer operates within the Transformer architecture. Given an input sequence, the tokenizer first converts each token into a unique index and retrieves the corresponding embedding. These embeddings are then fed into the Transformer model to predict the next tokens. The output of the Transformer—namely, the predicted token embeddings—is mapped back to their respective indices and decoded into human-readable words.
+Figure 3 illustrates how the tokenizer operates within the Transformer architecture. Given an input sequence, the tokenizer first converts each token into a unique index and retrieves the corresponding embedding. These embeddings are then fed into the Transformer model to predict the next tokens. The output of the Transformer—namely, the predicted token embeddings—is mapped back to their respective indices and decoded into human-readable words.
 
 
 ![tokenization](https://github.com/fudonglin/fudonglin.github.io/blob/main/_posts/2025-07-04-transformer/tokenization.png?raw=true)
 
-Figure 4: The End-to-End Workflow of Tokenizer.	
+Figure 3: The End-to-End Workflow of Tokenizer.	
 
 
 
@@ -168,7 +174,7 @@ With that being said, building vision tokenizers is much more challenging than t
 
 ![image-20250614230247926](https://github.com/fudonglin/fudonglin.github.io/blob/main/_posts/2025-07-04-transformer/attention.png?raw=true)
 
-Figure 5: The Single-Head and Multi-Head Attention methods.
+Figure 4: The Single-Head and Multi-Head Attention methods.
 
 
 
