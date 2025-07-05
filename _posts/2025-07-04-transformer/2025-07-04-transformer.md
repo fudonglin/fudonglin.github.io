@@ -70,7 +70,7 @@ However, RNN-based encoder-decoder architectures suffer from two major limitatio
 ## Transformers
 
 
-The Transformer architecture addresses two key limitations of the RNN-based encoder-decoder model: (i) limited parallelization, and (ii) difficulty in capturing long-range dependencies. 
+The Transformer architecture addresses two key limitations of the RNN-based encoder-decoder model: (i) limited parallelization; and (ii) inability to capture long-range dependencies. 
 
 ![Transformers](https://github.com/fudonglin/fudonglin.github.io/blob/main/_posts/2025-07-04-transformer/transformers.png?raw=true)
 
