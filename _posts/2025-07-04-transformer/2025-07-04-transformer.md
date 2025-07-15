@@ -137,7 +137,7 @@ Before discussing Multi-Head Attention, we first need to understand tokenization
 
 **Why do we need a Tokenizer in the language model?** The reason is that computers do not understand human language—they only process binary signals. 
 Therefore, we must convert human language into numerical representations that models can understand. 
-In simple terms, a tokenizer functions like a dictionary: each token (usually a word or subword) is mapped to a unique index and a learnable embedding:
+In simple terms, a tokenizer functions like a dictionary: each token (usually a word or subword) is mapped to a unique index. Then, this index is used to retrieve the corresponding embedding:
 
 |  Token   | Index |              Embedding               |
 | :------: | :---: | :----------------------------------: |
@@ -152,7 +152,7 @@ In simple terms, a tokenizer functions like a dictionary: each token (usually a 
 
 
 
-Figure 3 illustrates how the tokenizer operates within the Transformer architecture. Given an input sequence, the tokenizer first converts each token into a unique index and retrieves the corresponding embedding. These embeddings are then fed into the Transformer model to predict the next tokens. The output of the Transformer—namely, the predicted token embeddings—is mapped back to their respective indices and decoded into human-readable words.
+Figure 3 illustrates how the tokenizer operates within the Transformer architecture. Given an input sequence, the tokenizer first converts tokens into a set of dictionary indices. Then, these indices are used to retrieve the corresponding embeddings. Next, these embeddings are then fed into the Transformer model to predict the next tokens. The output of the Transformer—namely, the predicted token embeddings—is mapped back to their respective indices and decoded into human-readable words.
 
 
 ![tokenization](https://github.com/fudonglin/fudonglin.github.io/blob/main/_posts/2025-07-04-transformer/tokenization.png?raw=true)
@@ -345,33 +345,6 @@ Since `"city"` is the fourth word in the sequence (with zero-based indexing), it
 
 According to the sinusoidal positional encoding scheme, the values at even-numbered dimensions are computed using the sine function, while the values at odd-numbered dimensions use the cosine function. 
 This maps the position index 3 to a unique 512-dimensional positional embedding.
-
-
-
-If you're still unsure how positional embeddings work, try running the following code:
-
-```python
-class PositionalEncoding(nn.Module):
-    def __init__(self, d_model, max_len=5000):
-        super().__init__()
-        pe = torch.zeros(max_len, d_model)  # (max_len, d_model)
-        position = torch.arange(0, max_len).unsqueeze(1)  # (max_len, 1)
-
-        # Compute the division term, i.e., \frac{10000}{-2i * d_{model}}
-        div_term = torch.exp(torch.arange(0, d_model, 2) * (-math.log(10000.0) / d_model))  # (d_model/2,)
-
-        # Fill even-numbered dimension with sine values
-        pe[:, 0::2] = torch.sin(position * div_term)
-        # Fill odd-numbered dimension with cosine values
-        pe[:, 1::2] = torch.cos(position * div_term)
-
-        self.pe = pe.unsqueeze(0)  # (1, max_len, d_model)
-
-    def forward(self, x):
-        pos_embed = self.pe[:, :x.size(1), :].to(x.device)
-        x = x + pos_embed
-        return x
-```
 
 
 
