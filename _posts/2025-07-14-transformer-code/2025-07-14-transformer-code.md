@@ -4,7 +4,7 @@
 
 In this blog, we’ll walk through a PyTorch implementation of the Transformer architecture built entirely from scratch. If you’re new to Transformers or looking for a refresher, I recommend first reviewing the original paper, [*Attention Is All You Need*](https://arxiv.org/pdf/1706.03762), along with my earlier post, [*Similarity Is All You Need: A Step-by-Step Guide to Understanding Transformers*](https://fudonglin.github.io/2025/07/04/transformer.html).
 
-> You can find the complete implementation in the [GitHub repository](https://github.com/fudonglin/transformer).
+> 🔍 You can find the complete implementation in the [GitHub repository](https://github.com/fudonglin/transformer).
 
 
 
@@ -23,17 +23,18 @@ Figure 1 highlights the three main building blocks of the model: **Positional En
 - Since the attention mechanism is inherently order-agnostic, **Positional Encoding** is introduced to inject positional information into the model.
 - The **Encoder** contains **Multi-Head Self-Attention** and **Feedforward Networks**, learning contextual representations from the source language.
 - The **Decoder** comprises:
-  1. **Masked Multi-Head Self-Attention** to enforce autoregressive decoding,
-  2. **Cross-Attention** to align the source and target sequences,
-  3. A **Feedforward Network** to apply non-linear transformations and enhance representational power.
+  
+  (i) **Masked Multi-Head Self-Attention** to enforce autoregressive decoding,
+  
+  (ii) **Cross-Attention** to align the source and target sequences,
+  
+  (iii) A **Feedforward Network** to apply non-linear transformations and enhance representational power.
 
 
 
 ## Positional Encoding
 
-Transformers are inherently **order-agnostic** because self-attention treats all tokens equally, regardless of position. To introduce sequence order, the authors use Positional Encoding, which encodes both relative and absolute position information using sinusoidal functions.
-
-The original paper uses fixed, non-learnable encodings:
+Transformers are inherently **order-agnostic** because self-attention treats all tokens equally, regardless of position. To introduce sequence order, the authors use Positional Encoding, which encodes both relative and absolute position information using sinusoidal functions:
 
 $$
 \begin{gathered}
@@ -102,7 +103,7 @@ $$
 $$
 
 
-Here, $\mathbf{Q}$, $\mathbf{K}$, and $\mathbf{V}$ are the query, key, and value in the Attention. $\mathbf{W}^{Q}, \mathbf{W}^{K}, \mathbf{W}^{V}$,  and $\mathbf{W}^{O}$ are four learnable matrices.  $i$ denote the $i$-th attention head. $\sqrt{d_{k}}$  is a scale factor that helps produce a smoother distribution of attention weights.
+Here, $\mathbf{Q}$, $\mathbf{K}$, and $\mathbf{V}$ are the query, key, and value in the Attention mechnism. $\mathbf{W}^{Q}, \mathbf{W}^{K}, \mathbf{W}^{V}$,  and $\mathbf{W}^{O}$ are four learnable matrices.  $i$ denote the $i$-th attention head. $\sqrt{d_{k}}$  is a scale factor that helps produce a smoother distribution of attention weights.
 
 
 
@@ -208,11 +209,7 @@ class FeedForward(nn.Module):
 
 ## Encoder
 
-The **Encoder** learns a contextual representation of the input sequence. Each encoder layer consists of:
-
-- Multi-Head Self-Attention
-- Position-wise Feedforward Network
-- Residual Connections and Layer Normalization
+The **Encoder** learns a contextual representation of the input sequence. Each encoder layer consists of: Multi-Head Self-Attention, Position-wise Feedforward Network, and Residual Connections and Layer Normalization.
 
 
 
@@ -244,9 +241,9 @@ class EncoderLayer(nn.Module):
 
 The **Decoder** generates the target sequence, one token at a time, using both past predictions and encoded source representations. Each decoder layer contains:
 
-- Masked Multi-Head Self-Attention (to prevent access to future tokens),
-- Cross-Attention (to attend to the encoder output),
-- Feedforward Network (for non-linear transformation).
+- Masked Multi-Head Self-Attention to prevent access to future tokens,
+- Cross-Attention to attend to the encoder output,
+- Feedforward Network for non-linear transformation.
 
 
 
