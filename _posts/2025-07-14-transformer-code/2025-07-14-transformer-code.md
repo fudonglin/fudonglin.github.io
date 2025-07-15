@@ -351,7 +351,7 @@ class Transformer(nn.Module):
 
 
 
-## Training and Inference Example
+## Training and Inference Examples
 
 When working with sequence-to-sequence models like Transformers, it’s important to understand that **training and inference follow fundamentally different workflows**, even though they use the same model architecture. 
 
