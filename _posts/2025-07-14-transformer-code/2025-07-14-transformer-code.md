@@ -4,6 +4,8 @@
 
 In this blog, we’ll walk through a PyTorch implementation of the Transformer architecture built entirely from scratch. If you’re new to Transformers or looking for a refresher, I recommend first reviewing the original paper, [*Attention Is All You Need*](https://arxiv.org/pdf/1706.03762), along with my earlier post, [*Similarity Is All You Need: A Step-by-Step Guide to Understanding Transformers*](https://fudonglin.github.io/2025/07/04/transformer.html).
 
+> You can find the complete implementation in the [GitHub repository](https://github.com/fudonglin/transformer).
+
 
 
 ## Overview
@@ -33,12 +35,13 @@ Transformers are inherently **order-agnostic** because self-attention treats all
 
 The original paper uses fixed, non-learnable encodings:
 
-```math
+$$
 \begin{gathered}
 PE(pos, 2i) = \sin(\frac{pos}{10000^{2i/d_{\textrm{model}}}}), \\
 PE(pos, 2i+1) = \cos(\frac{pos}{10000^{2i/d_{\textrm{model}}}}).
 \end{gathered}
-```
+$$
+
 
 Here, $pos$ denotes the position of a word (or token) in the sequence, $d\_{\textrm{model}}$ is the dimensionality of the model's embeddings (e.g., $d_{\textrm{model}} = 512$ used in the paper), and $i \in \{0, 1, 2, \dots, d_{\textrm{model}} - 1 \}$ indexes the embedding dimensions. 
 
@@ -90,13 +93,14 @@ class PositionalEncoding(nn.Module):
 
 **Multi-Head Attention (MHA)** is designed to help the model capture different types of relationships between tokens (e.g., words) in a sequence. It enables the model to attend to information from multiple representation subspaces simultaneously:
 
-```math
+$$
 \begin{gathered}
 \text{MultiHead}(\mathbf{Q}, \mathbf{K}, \mathbf{V}) = \text{Concat}(\text{head}_1, \dots, \text{head}_h) \mathbf{W}^O, \\
 \text{head}_i = \text{Attention}(\mathbf{Q} \mathbf{W}_i^Q, \mathbf{K} \mathbf{W}_i^K, \mathbf{V} \mathbf{W}_i^V), \\
 \text{Attention}(\mathbf{Q}, \mathbf{K}, \mathbf{V}) = \text{softmax}\left( \frac{\mathbf{Q} \mathbf{K}^T}{\sqrt{d_k}} \right) \mathbf{V}.
 \end{gathered}
-```
+$$
+
 
 Here, $\mathbf{Q}$, $\mathbf{K}$, and $\mathbf{V}$ are the query, key, and value in the Attention. $\mathbf{W}^{Q}, \mathbf{W}^{K}, \mathbf{W}^{V}$,  and $\mathbf{W}^{O}$ are four learnable matrices.  $i$ denote the $i$-th attention head. $\sqrt{d_{k}}$  is a scale factor that helps produce a smoother distribution of attention weights.
 
@@ -168,9 +172,11 @@ The **Position-wise Feedforward Network (FFN)** is applied to each token indepen
 
 > 🔍 The non-linearity — typically ReLU or GELU — is crucial; without it, the FFN would collapse into a single linear transformation, reducing its ability to capture complex patterns.
 
-```math
+$$
 \text{FFN}(\mathbf{x}) = \mathbf{W}_2 \cdot \phi(\mathbf{W}_1 \cdot \mathbf{x} + \mathbf{b}_1) + \mathbf{b}_2.
-```
+$$
+
+
 
 Here, $\mathbf{x}$ is the input token representation at a given position. $\mathbf{W}\_{i}$ and $\mathbf{b}\_{i}$ are the weights and bias at the $i$-th linear layer. $\phi ( \cdot )$ is the non-linear activation function, typically ReLU or GELU.
 
@@ -345,4 +351,6 @@ class Transformer(nn.Module):
 
         return self.fc_out(tgt)
 ```
+
+
 
