@@ -1,12 +1,14 @@
 # Implement Transformers from Scratch
 
-This repository offers an **unofficial PyTorch implementation of the Transformer architecture** from scratch. If you're new to Transformers or want a refresher, I highly recommend reading the original paper, [Attention Is All You Need](https://arxiv.org/pdf/1706.03762), as well as my previous [blog post](https://fudonglin.github.io/2025/07/04/transformer.html), which walks through each component step-by-step.
+## Preface
+
+In this blog, we’ll walk through a PyTorch implementation of the Transformer architecture built entirely from scratch. If you’re new to Transformers or looking for a refresher, I recommend first reviewing the original paper, [*Attention Is All You Need*](https://arxiv.org/pdf/1706.03762), along with my earlier post, [*Similarity Is All You Need: A Step-by-Step Guide to Understanding Transformers*](https://fudonglin.github.io/2025/07/04/transformer.html).
 
 
 
 ## Overview
 
-![Transformer](https://github.com/fudonglin/transformer/blob/main/images/transformers.png?raw=t)
+![Transformer](https://github.com/fudonglin/fudonglin.github.io/blob/main/_posts/2025-07-14-transformer-code/transformers.png?raw=true)
 
 Figure 1: Transformer model architecture.
 
@@ -84,7 +86,7 @@ class PositionalEncoding(nn.Module):
 
 ## Multi-Head Attention
 
-![MHA](https://github.com/fudonglin/transformer/blob/main/images/attention.png?raw=true)
+![MHA](https://github.com/fudonglin/fudonglin.github.io/blob/main/_posts/2025-07-14-transformer-code/attention.png?raw=true)
 
 **Multi-Head Attention (MHA)** is designed to help the model capture different types of relationships between tokens (e.g., words) in a sequence. It enables the model to attend to information from multiple representation subspaces simultaneously:
 
