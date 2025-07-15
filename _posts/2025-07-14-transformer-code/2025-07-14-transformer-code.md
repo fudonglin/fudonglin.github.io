@@ -16,11 +16,11 @@ Figure 1: Transformer model architecture.
 
 
 
-This repository implements the Transformer model for machine translation, following the original design. As an example task, we translate the Chinese sentence `"纽约是一座城市"` into its English equivalent: `"New York is a city"`.
+Let's implement the Transformer model for machine translation, following the original design. As an example task, we translate the Chinese sentence `"纽约是一座城市"` into its English equivalent: `"New York is a city"`.
 
 Figure 1 highlights the three main building blocks of the model: **Positional Encoding**, **Encoder**, and **Decoder**:
 
-- **Positional Encoding** adds order-awareness to the otherwise order-agnostic attention mechanism.
+- Since the attention mechanism is inherently order-agnostic, **Positional Encoding** is introduced to inject positional information into the model.
 - The **Encoder** contains **Multi-Head Self-Attention** and **Feedforward Networks**, learning contextual representations from the source language.
 - The **Decoder** comprises:
   1. **Masked Multi-Head Self-Attention** to enforce autoregressive decoding,
