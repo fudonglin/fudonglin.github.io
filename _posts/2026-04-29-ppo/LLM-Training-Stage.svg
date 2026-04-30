@@ -1,0 +1,139 @@
+<svg width="100%" viewBox="0 0 680 430" xmlns="http://www.w3.org/2000/svg" role="img">
+<title>LLM training pipeline from pre-training to RLHF</title>
+<desc>A vertical flowchart showing three major stages of LLM training: pre-training, supervised fine-tuning, and RLHF/post-training with PPO highlighted.</desc>
+
+<style>
+  :root {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f5f4f0;
+    --text-primary: #2c2c2a;
+    --text-secondary: #5f5e5a;
+    --border: rgba(0,0,0,0.15);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg-primary: #1a1a18;
+      --bg-secondary: #2c2c2a;
+      --text-primary: #e8e6dc;
+      --text-secondary: #b4b2a9;
+      --border: rgba(255,255,255,0.15);
+    }
+    .stage-blue rect { fill: #0C447C; stroke: #85B7EB; }
+    .stage-blue .title { fill: #B5D4F4; }
+    .stage-blue .sub { fill: #85B7EB; }
+    .stage-teal rect { fill: #085041; stroke: #5DCAA5; }
+    .stage-teal .title { fill: #9FE1CB; }
+    .stage-teal .sub { fill: #5DCAA5; }
+    .stage-purple rect { fill: #26215C; stroke: #AFA9EC; }
+    .stage-purple .title { fill: #CECBF6; }
+    .stage-purple .sub { fill: #AFA9EC; }
+    .stage-coral rect { fill: #712B13; stroke: #F0997B; }
+    .stage-coral .title { fill: #F5C4B3; }
+    .stage-coral .sub { fill: #F0997B; }
+    .stage-amber rect { fill: #633806; stroke: #EF9F27; }
+    .stage-amber .title { fill: #FAC775; }
+    .stage-amber .sub { fill: #EF9F27; }
+    .ann { fill: #b4b2a9; }
+    .arrow-line { stroke: #b4b2a9; }
+    .arrow-label { fill: #b4b2a9; }
+    .leader-line { stroke: #b4b2a9; }
+    .leader-dot { fill: #b4b2a9; }
+    .focus-label { fill: #FAC775; }
+    .focus-dash { stroke: #FAC775; }
+  }
+  text { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
+  .title { font-size: 14px; font-weight: 500; }
+  .sub { font-size: 12px; font-weight: 400; }
+  .ann { font-size: 12px; fill: #5f5e5a; }
+  .arrow-line { stroke: #5f5e5a; stroke-width: 1.5; }
+  .arrow-label { font-size: 12px; fill: #5f5e5a; }
+  .leader-line { stroke: #5f5e5a; stroke-width: 0.5; stroke-dasharray: 3 2; }
+  .leader-dot { fill: #5f5e5a; }
+  .focus-label { font-size: 12px; fill: #BA7517; }
+  .focus-dash { stroke: #BA7517; stroke-width: 0.5; stroke-dasharray: 3 2; }
+
+  .stage-blue rect { fill: #E6F1FB; stroke: #185FA5; stroke-width: 0.5; }
+  .stage-blue .title { fill: #0C447C; }
+  .stage-blue .sub { fill: #185FA5; }
+  .stage-teal rect { fill: #E1F5EE; stroke: #0F6E56; stroke-width: 0.5; }
+  .stage-teal .title { fill: #085041; }
+  .stage-teal .sub { fill: #0F6E56; }
+  .stage-purple rect { fill: #EEEDFE; stroke: #534AB7; stroke-width: 0.5; }
+  .stage-purple .title { fill: #3C3489; }
+  .stage-purple .sub { fill: #534AB7; }
+  .stage-coral rect { fill: #FAECE7; stroke: #993C1D; stroke-width: 0.5; }
+  .stage-coral .title { fill: #712B13; }
+  .stage-coral .sub { fill: #993C1D; }
+  .stage-amber rect { fill: #FAEEDA; stroke: #854F0B; stroke-width: 1.5; }
+  .stage-amber .title { fill: #633806; }
+  .stage-amber .sub { fill: #854F0B; }
+</style>
+
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+</defs>
+
+<!-- Stage 1: Pre-training -->
+<g class="stage-blue">
+  <rect x="160" y="30" width="360" height="56" rx="8"/>
+  <text class="title" x="340" y="50" text-anchor="middle" dominant-baseline="central">Stage 1: Pre-training</text>
+  <text class="sub" x="340" y="68" text-anchor="middle" dominant-baseline="central">Next-token prediction on large corpora</text>
+</g>
+<text class="ann" x="556" y="50" text-anchor="start">Web text, books,</text>
+<text class="ann" x="556" y="66" text-anchor="start">code (trillions of tokens)</text>
+<line class="leader-line" x1="520" y1="58" x2="550" y2="55"/>
+<circle class="leader-dot" cx="520" cy="58" r="1.5"/>
+
+<!-- Arrow 1→2 -->
+<line x1="340" y1="86" x2="340" y2="130" class="arrow-line" marker-end="url(#arrow)"/>
+<text class="arrow-label" x="350" y="112" text-anchor="start">Base model</text>
+
+<!-- Stage 2: SFT -->
+<g class="stage-teal">
+  <rect x="160" y="130" width="360" height="56" rx="8"/>
+  <text class="title" x="340" y="150" text-anchor="middle" dominant-baseline="central">Stage 2: Supervised fine-tuning</text>
+  <text class="sub" x="340" y="168" text-anchor="middle" dominant-baseline="central">Learn from human demonstrations</text>
+</g>
+<text class="ann" x="556" y="150" text-anchor="start">Curated (prompt, response)</text>
+<text class="ann" x="556" y="166" text-anchor="start">pairs from human labelers</text>
+<line class="leader-line" x1="520" y1="158" x2="550" y2="155"/>
+<circle class="leader-dot" cx="520" cy="158" r="1.5"/>
+
+<!-- Arrow 2→3 -->
+<line x1="340" y1="186" x2="340" y2="230" class="arrow-line" marker-end="url(#arrow)"/>
+<text class="arrow-label" x="350" y="212" text-anchor="start">SFT model</text>
+
+<!-- Stage 3: RLHF container -->
+<g class="stage-purple">
+  <rect x="80" y="230" width="520" height="180" rx="12" stroke-width="1"/>
+  <text class="title" x="340" y="256" text-anchor="middle" dominant-baseline="central">Stage 3: RLHF / Post-training</text>
+</g>
+
+<!-- Sub: Reward model -->
+<g class="stage-coral">
+  <rect x="108" y="274" width="220" height="56" rx="8"/>
+  <text class="title" x="218" y="294" text-anchor="middle" dominant-baseline="central">Reward model</text>
+  <text class="sub" x="218" y="312" text-anchor="middle" dominant-baseline="central">Trained on human preferences</text>
+</g>
+
+<!-- Sub: PPO -->
+<g class="stage-amber">
+  <rect x="352" y="274" width="220" height="56" rx="8"/>
+  <text class="title" x="462" y="294" text-anchor="middle" dominant-baseline="central">PPO optimization</text>
+  <text class="sub" x="462" y="312" text-anchor="middle" dominant-baseline="central">Policy gradient with clipping</text>
+</g>
+
+<!-- Arrow RM → PPO -->
+<line x1="328" y1="302" x2="350" y2="302" class="arrow-line" marker-end="url(#arrow)"/>
+
+<!-- PPO focus label -->
+<text class="focus-label" x="462" y="352" text-anchor="middle">Focus of this blog post</text>
+<line class="focus-dash" x1="462" y1="336" x2="462" y2="342"/>
+
+<!-- Bottom annotations -->
+<text class="ann" x="218" y="386" text-anchor="middle">KL divergence penalty</text>
+<text class="ann" x="462" y="386" text-anchor="middle">Clipped surrogate objective</text>
+
+</svg>
