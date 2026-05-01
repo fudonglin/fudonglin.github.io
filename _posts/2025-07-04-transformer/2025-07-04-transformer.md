@@ -1,4 +1,4 @@
-# Similarity Is All You Need: A Step-by-Step Guide to Understanding Transformers
+# Transformers Are Just Weighted Sums
 
 ## Preface
 
