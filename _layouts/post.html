@@ -23,26 +23,22 @@ layout: default
           </svg>
           <span id="view-count-text"></span>
         </span>
-      <img id="hit-badge" src="https://hitscounter.dev/api/hit?url={{ hit_url }}&label=views&icon=eye-fill&color=%236e7781" alt="" style="display:none;">
     </p>
 
     <script>
       (function() {
-        var badge = document.getElementById('hit-badge');
         var text = document.getElementById('view-count-text');
-        badge.addEventListener('load', function() {
-          fetch(badge.src).then(function(r) { return r.text(); }).then(function(svg) {
+        fetch('https://hitscounter.dev/api/hit?url={{ hit_url }}&label=views&icon=eye-fill&color=%236e7781')
+          .then(function(r) { return r.text(); })
+          .then(function(svg) {
             var match = svg.match(/aria-label="[^:]+:\s*\d+\s*\/\s*(\d+)/);
             if (match) {
               text.textContent = match[1] + ' views';
             }
-          }).catch(function() {
+          })
+          .catch(function() {
             text.textContent = 'views';
           });
-        });
-        badge.addEventListener('error', function() {
-          text.textContent = 'views';
-        });
       })();
     </script>
 
