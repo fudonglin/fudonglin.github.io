@@ -44,11 +44,12 @@ hr {
   opacity: 0.3;
 }
 
-/* Hit counter badge alignment */
-.post-meta .hit-counter {
-  display: inline-block;
-  vertical-align: middle;
-  height: 20px;
-  position: relative;
-  top: -1px;
+/* View counter */
+.view-counter {
+  color: #828282;
+}
+
+.view-counter-icon {
+  vertical-align: -2px;
+  margin-right: 2px;
 }

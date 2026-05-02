@@ -16,8 +16,35 @@ layout: default
         • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card" itemprop="name">{{ author }}</span></span>
       {%- endif -%}
       {%- assign hit_url = site.url | append: page.url | url_encode -%}
-      • <img class="hit-counter" src="https://hitscounter.dev/api/hit?url={{ hit_url }}&label=views&icon=eye&color=%236e7781" alt="Views">
+      • <span id="view-counter" class="view-counter">
+          <svg class="view-counter-icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
+            <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7"/>
+          </svg>
+          <span id="view-count-text"></span>
+        </span>
+      <img id="hit-badge" src="https://hitscounter.dev/api/hit?url={{ hit_url }}&label=views&icon=eye-fill&color=%236e7781" alt="" style="display:none;">
     </p>
+
+    <script>
+      (function() {
+        var badge = document.getElementById('hit-badge');
+        var text = document.getElementById('view-count-text');
+        badge.addEventListener('load', function() {
+          fetch(badge.src).then(function(r) { return r.text(); }).then(function(svg) {
+            var match = svg.match(/aria-label="[^:]+:\s*\d+\s*\/\s*(\d+)/);
+            if (match) {
+              text.textContent = match[1] + ' views';
+            }
+          }).catch(function() {
+            text.textContent = 'views';
+          });
+        });
+        badge.addEventListener('error', function() {
+          text.textContent = 'views';
+        });
+      })();
+    </script>
 
       <script>
         window.MathJax = {
