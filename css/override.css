@@ -43,3 +43,12 @@ hr {
   font-size: 2.5em;
   opacity: 0.3;
 }
+
+/* Hit counter badge alignment */
+.post-meta .hit-counter {
+  display: inline-block;
+  vertical-align: middle;
+  height: 20px;
+  position: relative;
+  top: -1px;
+}

@@ -14,7 +14,10 @@ layout: default
       {% assign author = page.author | default: site.author %}
       {%- if author -%}
         • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card" itemprop="name">{{ author }}</span></span>
-      {%- endif -%}</p>
+      {%- endif -%}
+      {%- assign hit_url = site.url | append: page.url | url_encode -%}
+      • <img class="hit-counter" src="https://hitscounter.dev/api/hit?url={{ hit_url }}&label=views&icon=eye&color=%236e7781" alt="Views">
+    </p>
 
       <script>
         window.MathJax = {
