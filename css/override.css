@@ -53,3 +53,9 @@ hr {
   vertical-align: -2px;
   margin-right: 2px;
 }
+
+/* Allow long equations to scroll horizontally */
+.MathJax {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
