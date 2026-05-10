@@ -55,7 +55,8 @@ hr {
 }
 
 /* Allow long equations to scroll horizontally */
-.MathJax {
+mjx-container {
   overflow-x: auto;
   overflow-y: hidden;
+  max-width: 100%;
 }
