@@ -60,16 +60,14 @@ hr {
   width: 100% !important;
 }
 
-/* Long equations: invisible scroll (no scrollbar) */
+/* Long equations: allow overflow beyond content width */
 mjx-container[jax="CHTML"][display="true"] {
-  overflow-x: auto !important;
-  overflow-y: hidden !important;
-  max-width: 100% !important;
-  scrollbar-width: none;
+  overflow: visible !important;
+  max-width: none !important;
 }
 
-mjx-container[jax="CHTML"][display="true"]::-webkit-scrollbar {
-  display: none;
+.post-content, .e-content {
+  overflow: visible !important;
 }
 
 @media screen and (max-width: 600px) {
