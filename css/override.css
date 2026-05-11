@@ -56,7 +56,7 @@ hr {
 
 /* Widen content area */
 .wrapper {
-  max-width: 1000px !important;
+  max-width: 900px !important;
   width: 100% !important;
 }
 
