@@ -1,5 +1,3 @@
-Why climb a mountain? 
+What I cannot create, I do not understand.
 
-Because it is there. 
-
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; —George Mallory 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; —Richard Feynman 
